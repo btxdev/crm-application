@@ -94,7 +94,7 @@ $address = 'null';
                   <a class="card__title" href="catalog-product">Электронный конструктор "Позитроник"</a>
                   <p class="card__descr">Сборка без пайки на макетную плату, 34 электронные схемы, 74 элемента. Всё необходимое в комплекте. Для детей от 8 лет</p>
                   <span class="card__id">Код товара: 1566</span>
-                  <span class="card__availability">Товар в наличии, магазин на Пушкина, 17</span>
+                  <span class="card__availability">Товар в наличии</span>
                 </div>
                 <div class="catalog__product-price price-wrapper">
                   <span class="price-text">1215 ₽</span>
@@ -109,7 +109,7 @@ $address = 'null';
                   <a class="card__title" href="catalog-product">Электронный конструктор "Безопасная бомба, Полицейская мигалка"</a>
                   <p class="card__descr">Сборка без пайки на медный скотч. 2 схемы-эксперимента, 26 компонентов в наборе. Для детей от 8 лет.</p>
                   <span class="card__id">Код товара: 2172</span>
-                  <span class="card__availability">Товар в наличии, магазин на Пушкина, 17</span>
+                  <span class="card__availability">Товар в наличии</span>
                 </div>
                 <div class="catalog__product-price price-wrapper">
                   <span class="price-text">546 ₽</span>
@@ -128,7 +128,7 @@ $address = 'null';
                   <a class="card__title">LCD 1602 2004 конвертор в I2C</a>
                   <p class="card__descr">Модуль для подключения текстового дисплея по I2C</p>
                   <span class="card__id">Код товара: 1671</span>
-                  <span class="card__availability">Товар в наличии, магазин на Пушкина, 17</span>
+                  <span class="card__availability">Товар в наличии</span>
                 </div>
                 <div class="catalog__product-price price-wrapper">
                   <span class="price-text">130 ₽</span>
@@ -143,7 +143,7 @@ $address = 'null';
                   <a class="card__title">Символьный LCD дисплей 1602 с I2C конвертером, синий</a>
                   <p class="card__descr">2 строки по 16 символов, без поддержки кириллицы</p>
                   <span class="card__id">Код товара: 2160</span>
-                  <span class="card__availability">Товар в наличии, магазин на Пушкина, 17</span>
+                  <span class="card__availability">Товар в наличии</span>
                 </div>
                 <div class="catalog__product-price price-wrapper">
                   <span class="price-text">581 ₽</span>
@@ -177,7 +177,7 @@ $address = 'null';
                   <a class="card__title">Корпус средний с окном</a>
                   <p class="card__descr">100x70x25 мм, 7 штук. Уценка - долго лежали</p>
                   <span class="card__id">Код товара: 1935</span>
-                  <span class="card__availability">Товар в наличии, магазин на Пушкина, 17</span>
+                  <span class="card__availability">Товар в наличии</span>
                 </div>
                 <div class="catalog__product-price price-wrapper">
                   <span class="price-text">170 ₽</span>
