@@ -17,18 +17,21 @@ class Database extends PDO {
         $this->instance = new PDO($dsn, $user, $password, $options);
     }
 
+    // выполнить запрос
     function run($sql, $args = null) {
         $stmt = $this->instance->prepare($sql);
         $stmt->execute($args);
         return $stmt;
     }
 
+    // выполнить запрос и получить ответ
     function fetch($sql, $args = null) {
         $stmt = $this->run($sql, $args);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-
+    
+    // генератор случайных строк с указанной длинной
     function strgen($alphabet = '0123456789abcdef', $len = 8) {
         $alen = strlen($alphabet) - 1;
         $str = '';
@@ -38,12 +41,24 @@ class Database extends PDO {
         return $str;
     }
 
+    // создать соль
     function salt() {
         return $this->strgen('0123456789abcdefghijklmnopqrstuvwxyz', 8);
     }
 
+    // перец
     function pepper() {
         return '11f70g7z';
+    }
+
+    // удаление таблицы
+    function removeTable($table) {
+        $this->run(
+            'DROP TABLE IF EXISTS :table;', 
+            [
+                ':table' => $table
+            ]
+        );
     }
 
 }

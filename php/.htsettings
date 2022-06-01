@@ -1,8 +1,9 @@
 db_host = 127.0.0.1
-db_user = webapp
-db_password = qQjmQa&72h7tLYN
-db_dbname = webapp
+db_user = crm-application
+db_password = qQjmQa!72z7tPYN
+db_dbname = crm-application
 db_encoding = utf8mb4
-html_title = Web Application
-session_name = 3f25151745b7475cd97f774fe7e54fab
+admin_title = CRM Application
+shop_title = Магазин электронных компонентов
+session_name = 4d25151745b7475cd97aa74fe7e54fab
 session_hash_hardness = 20

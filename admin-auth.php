@@ -2,7 +2,7 @@
 
 include_once __DIR__.'/php/include_db.php';
 
-$html_title = $settings->get('html_title');
+$html_title = $settings->get('admin_title');
 
 $authorized = $access->checkSessionCookie($settings->get('session_name'));
 if ($authorized) {

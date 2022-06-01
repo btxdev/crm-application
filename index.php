@@ -21,32 +21,34 @@ $address = 'null';
 </head>
 <body class="page__body">
   <header class="header">
-    <div class="header__content-inner">
-      <div class="header__logo-wrapper">
-        <a class="header__logo" href="#">
-          <img src="img/ardu-logo.svg" alt="logo" width="125" height="25">
-        </a>
+    <div class="container">
+      <div class="header__content-inner">
+        <div class="header__logo-wrapper">
+          <a class="header__logo" href="#">
+            <img src="img/ardu-logo.svg" alt="logo" width="125" height="25">
+          </a>
+        </div>
+        <div class="header__content">
+          <input class="header__content-search" type="text" placeholder="Поиск товаров">
+          <a class="header__content-phone" href="<?= $tel_href ?>">
+            <?= $tel ?>
+          </a>
+          <a class="header__content-adress" href="#" target="_blank">
+            <?= $address ?>
+          </a>
+        </div>
+        <nav class="nav">
+          <a href="basket">
+            <ul class="nav__list list-reset">
+              <li class="nav__item">
+                <img src="img/basket.svg" alt="basket" width="21" height="16">
+                <span class="nav__basket-sum nav__price">1215</span>
+                <span class="nav__rub nav__price">₽</span>
+              </li>
+            </ul>
+          </a>
+        </nav>
       </div>
-      <div class="header__content">
-        <input class="header__content-search" type="text" placeholder="Поиск товаров">
-        <a class="header__content-phone" href="<?= $tel_href ?>">
-          <?= $tel ?>
-        </a>
-        <a class="header__content-adress" href="#" target="_blank">
-          <?= $address ?>
-        </a>
-      </div>
-      <nav class="nav">
-        <a href="basket">
-          <ul class="nav__list list-reset">
-            <li class="nav__item">
-              <img src="img/basket.svg" alt="basket" width="21" height="16">
-              <span class="nav__basket-sum nav__price">1215</span>
-              <span class="nav__rub nav__price">₽</span>
-            </li>
-          </ul>
-        </a>
-      </nav>
     </div>
   </header>
 

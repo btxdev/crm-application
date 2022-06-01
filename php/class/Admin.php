@@ -11,17 +11,100 @@ class Admin extends Database {
         $this->instance = $instance;
     }
 
+    function relation_alter($new_table, $table1, $table2, $key1, $key2) {
+        // установка связи между таблицами table1 и table2_table1 по индексу key1
+        $this->run(
+            'ALTER TABLE :new_table ADD FOREIGN KEY (:key1) 
+            REFERENCES :table1 (:key1) ON DELETE CASCADE ON UPDATE CASCADE;',
+            [
+                ':new_table' => $new_table,
+                ':table1' => $table1,
+                ':key1' => $key1
+            ]
+        );
+        // установка связи между таблицами table2 и table2_table1 по индексу key2
+        $this->run(
+            'ALTER TABLE :new_table ADD FOREIGN KEY (:key2) 
+            REFERENCES :table2 (:key2) ON DELETE CASCADE ON UPDATE CASCADE;',
+            [
+                ':new_table' => $new_table,
+                ':table2' => $table2,
+                ':key2' => $key2
+            ]
+        );
+    }
+
+    // связь один к одному
+    function relation_11($table1, $table2, $key1, $key2) {
+
+        $new_table  = $table1.'_'.$table2;
+        $this->removeTable($new_table);
+
+        // создание таблицы
+        $this->run(
+            'CREATE TABLE :new_table ( 
+                :key1 INT UNSIGNED NOT NULL , 
+                :key2 INT UNSIGNED NOT NULL , 
+                PRIMARY KEY (:key1) , 
+                INDEX :key2 (:key2)
+            )
+            ENGINE = InnoDB;',
+            [
+                ':new_table' => $new_table,
+                ':key1' => $key1,
+                ':key2' => $key2
+            ]
+        );
+
+        // установка связей
+        $this->relation_alter($new_table, $table1, $table2, $key1, $key2);
+
+    }
+
+    // связь один ко многим
+    function relation_1N($table1, $table2, $key1, $key2) {
+
+        $new_table  = $table2.'_'.$table1;
+        $this->removeTable($new_table);
+
+        // создание таблицы
+        $this->run(
+            'CREATE TABLE :new_table` ( 
+                :key2 INT UNSIGNED NOT NULL , 
+                :key1 INT UNSIGNED NOT NULL , 
+                PRIMARY KEY (:key2)
+            ) 
+            ENGINE = InnoDB;',
+            [
+                ':new_table' => $new_table,
+                ':key1' => $key1,
+                ':key2' => $key2
+            ]
+        );
+
+        // установка связей
+        $this->relation_alter($new_table, $table1, $table2, $key1, $key2);
+        
+    }
+
+    // связь многие ко многим
+    function relation_NN($table1, $table2, $key1, $key2) {
+        $this->relation_1N($table1, $table2, $key1, $key2);
+    }
+
+    // получить id пользователя по его username
     function getUserId($username) {
         $rows = $this->fetch(
-            'SELECT `employee_id` FROM employees WHERE username=?',
+            'SELECT `uuid` FROM users WHERE username=?',
             [$username]
         );
         if($rows == false) return false;
         else {
-            return intval($rows['employee_id']);
+            return intval($rows['uuid']);
         }
     }
 
+    // создать пользователя (с паролем)
     function createUser($username, $password) {
         // игнор, если пользователь уже существует
         if($this->getUserId($username) != false) {
@@ -30,7 +113,7 @@ class Admin extends Database {
         $salt = $this->salt();
         // создание записи в БД
         $this->run(
-            'INSERT INTO employees 
+            'INSERT INTO users 
             (username, password, salt, reg_date)
             VALUES (:username, :password, :salt, :reg_date)',
             [
@@ -45,41 +128,49 @@ class Admin extends Database {
         return $id;
     }
 
+    // посолить пароль
     function saltPassword($password, $salt) {
         return hash_hmac('sha256', $password, $salt);
     }
 
+    // поперчить пароль
     function pepperPassword($password) {
         return hash_hmac('sha256', $password, $this->pepper());
     }
 
+    // захешировать пароль с солью и перцем
     function hashPassword($password, $salt) {
         $salted = $this->saltPassword($password, $salt);
         $peppered = $this->pepperPassword($salted);
         return $peppered;
     }
 
+    // сверить пароль с хешем
     function verifyPassword($password, $salt, $hash) {
         $salted = $this->saltPassword($password, $salt);
         $peppered = $this->pepperPassword($salted);
         return ($peppered == $hash);
     }
 
+    // удалить пользователя
     function removeUser($uuid) {
         // удаление записи
-        $this->run('DELETE IGNORE FROM employees WHERE employee_id=?', [$uuid]);
+        $this->run('DELETE IGNORE FROM users WHERE uuid=?', [$uuid]);
     }
 
+    // создать роль
     function createRole($role) {
         // создание записи в БД
         $this->run('INSERT IGNORE INTO roles (role) VALUES (?)', [$role]);
     }
 
+    // удалить роль
     function removeRole($role) {
         // удаление записи
         $this->run('DELETE IGNORE FROM roles WHERE role=?', [$role]);
     }
 
+    // установить роль пользователю
     function setRoleToUser($role, $uuid) {
         // получение id роли
         $rows = $this->fetch('SELECT `role_id` FROM roles WHERE role=?', [$role]);
@@ -89,11 +180,11 @@ class Admin extends Database {
         $role_id = intval($rows['role_id']);
         // создание записи в БД
         $this->run(
-            'INSERT IGNORE INTO employees_roles 
-            (employee_id, role_id)
-            VALUES (:employee_id, :role_id)',
+            'INSERT IGNORE INTO users_roles 
+            (uuid, role_id)
+            VALUES (:uuid, :role_id)',
             [
-                ':employee_id' => $uuid,
+                ':uuid' => $uuid,
                 ':role_id' => $role_id
             ]
         );
