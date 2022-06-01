@@ -21,7 +21,7 @@ class Access extends Admin {
 
     function getUserIdBySessionHash($hash) {
         $result = $this->fetch(
-            'SELECT `employee_id` 
+            'SELECT `uuid` 
             FROM `sessions` 
             WHERE `sesshash` LIKE :hash',
             [
@@ -29,7 +29,7 @@ class Access extends Admin {
             ]
         );
         if($result == false) return false;
-        return $result['employee_id'];
+        return $result['uuid'];
     }
 
     function isAccessGranted($hash) {
@@ -44,11 +44,11 @@ class Access extends Admin {
         $hash = $this->generateSessionHash();
         $this->run(
             'INSERT INTO sessions 
-            (sesshash, employee_id, created)
-            VALUES (:sesshash, :employee_id, :created)',
+            (sesshash, uuid, created)
+            VALUES (:sesshash, :uuid, :created)',
             [
                 ':sesshash' => $hash,
-                ':employee_id' => $uuid,
+                ':uuid' => $uuid,
                 ':created' => date('Y-m-d')
             ]
         );
@@ -71,7 +71,7 @@ class Access extends Admin {
 
     function removeAccessFromUserId($uuid) {
         $this->run(
-            'DELETE FROM `sessions` WHERE `employee_id` LIKE :uuid',
+            'DELETE FROM `sessions` WHERE `uuid` LIKE :uuid',
             [
                 ':uuid' => $uuid
             ]
@@ -90,7 +90,7 @@ class Access extends Admin {
             return new Status('USER_NOT_FOUND');
 
         $data = $this->fetch(
-            'SELECT password, salt FROM employees WHERE employee_id LIKE :uuid',
+            'SELECT password, salt FROM users WHERE uuid LIKE :uuid',
             [
                 ':uuid' => $uuid
             ]
