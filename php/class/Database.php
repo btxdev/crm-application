@@ -52,13 +52,8 @@ class Database extends PDO {
     }
 
     // удаление таблицы
-    function removeTable($table) {
-        $this->run(
-            'DROP TABLE IF EXISTS :table;', 
-            [
-                ':table' => $table
-            ]
-        );
+    function dropTable($table) {
+        $this->run("DROP TABLE IF EXISTS `{$table}`");
     }
 
 }

@@ -14,23 +14,13 @@ class Admin extends Database {
     function relation_alter($new_table, $table1, $table2, $key1, $key2) {
         // установка связи между таблицами table1 и table2_table1 по индексу key1
         $this->run(
-            'ALTER TABLE :new_table ADD FOREIGN KEY (:key1) 
-            REFERENCES :table1 (:key1) ON DELETE CASCADE ON UPDATE CASCADE;',
-            [
-                ':new_table' => $new_table,
-                ':table1' => $table1,
-                ':key1' => $key1
-            ]
+            "ALTER TABLE `{$new_table}` ADD FOREIGN KEY (`{$key1}`) 
+            REFERENCES `{$table1}`(`{$key1}`) ON DELETE CASCADE ON UPDATE CASCADE;"
         );
         // установка связи между таблицами table2 и table2_table1 по индексу key2
         $this->run(
-            'ALTER TABLE :new_table ADD FOREIGN KEY (:key2) 
-            REFERENCES :table2 (:key2) ON DELETE CASCADE ON UPDATE CASCADE;',
-            [
-                ':new_table' => $new_table,
-                ':table2' => $table2,
-                ':key2' => $key2
-            ]
+            "ALTER TABLE `{$new_table}` ADD FOREIGN KEY (`{$key2}`) 
+            REFERENCES `{$table2}`(`{$key2}`) ON DELETE CASCADE ON UPDATE CASCADE;"
         );
     }
 
@@ -38,22 +28,17 @@ class Admin extends Database {
     function relation_11($table1, $table2, $key1, $key2) {
 
         $new_table  = $table1.'_'.$table2;
-        $this->removeTable($new_table);
+        $this->dropTable($new_table);
 
         // создание таблицы
         $this->run(
-            'CREATE TABLE :new_table ( 
-                :key1 INT UNSIGNED NOT NULL , 
-                :key2 INT UNSIGNED NOT NULL , 
-                PRIMARY KEY (:key1) , 
-                INDEX :key2 (:key2)
+            "CREATE TABLE `{$new_table}` ( 
+                `{$key1}` INT UNSIGNED NOT NULL , 
+                `{$key2}` INT UNSIGNED NOT NULL , 
+                PRIMARY KEY (`{$key1}`) , 
+                INDEX `{$key2}`(`{$key2}`)
             )
-            ENGINE = InnoDB;',
-            [
-                ':new_table' => $new_table,
-                ':key1' => $key1,
-                ':key2' => $key2
-            ]
+            ENGINE = InnoDB;",
         );
 
         // установка связей
@@ -65,21 +50,16 @@ class Admin extends Database {
     function relation_1N($table1, $table2, $key1, $key2) {
 
         $new_table  = $table2.'_'.$table1;
-        $this->removeTable($new_table);
+        $this->dropTable($new_table);
 
         // создание таблицы
         $this->run(
-            'CREATE TABLE :new_table` ( 
-                :key2 INT UNSIGNED NOT NULL , 
-                :key1 INT UNSIGNED NOT NULL , 
-                PRIMARY KEY (:key2)
+            "CREATE TABLE `{$new_table}` ( 
+                `{$key2}` INT UNSIGNED NOT NULL , 
+                `{$key1}` INT UNSIGNED NOT NULL , 
+                PRIMARY KEY (`{$key2}`)
             ) 
-            ENGINE = InnoDB;',
-            [
-                ':new_table' => $new_table,
-                ':key1' => $key1,
-                ':key2' => $key2
-            ]
+            ENGINE = InnoDB;",
         );
 
         // установка связей
