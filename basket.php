@@ -1,32 +1,39 @@
+<?php
+
+$tel = 'null';
+$tel_href = 'tel:';
+$address = 'null';
+
+?>
 <!DOCTYPE html>
 <html lang="ru" class="page">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Наборы и констукторы</title>
+  <title>Корзина</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
-  <script defer src="js/app.js"></script>
+  <script defer src="js/shop.js"></script>
 </head>
 <body class="page__body">
   <header class="header">
     <div class="header__content-inner">
       <div class="header__logo-wrapper">
-        <a class="header__logo" href="index.html">
+        <a class="header__logo" href="./">
           <img src="img/ardu-logo.svg" alt="logo" width="125" height="25">
         </a>
       </div>
       <div class="header__content">
         <input class="header__content-search" type="text" placeholder="Поиск товаров">
-        <a class="header__content-phone" href="tel:+79999999999">
-          +7 (999) 999-99-99
+        <a class="header__content-phone" href="<?= $tel_href ?>">
+          <?= $tel ?>
         </a>
         <a class="header__content-adress" href="#" target="_blank">
-          Пермь, ул. Пушкина, 17
+          <?= $address ?>
         </a>
       </div>
       <nav class="nav">
@@ -46,15 +53,15 @@
       <div class="container">
         <div class="catalog__inner">
           <aside class="catalog__aside aside">
-            <a class="aside__categories" href="index.html" data-path="one">
+            <a class="aside__categories" href="./" data-path="one">
               <img class="aside__categories-image" src="img/kits.svg" alt="kits" width="25" height="25" data-path="one">
               <span class="aside__categories-text" data-path="one">Наборы и констукторы</span>
             </a>
-            <a class="aside__categories" href="index.html" data-path="two">
+            <a class="aside__categories" href="./" data-path="two">
               <img class="aside__categories-image" src="img/led.svg" alt="display and led" width="25" height="25" data-path="two">
               <span class="aside__categories-text" data-path="two">Дисплеи, светодоиоды</span>
             </a>
-            <a class="aside__categories" href="index.html" data-path="three">
+            <a class="aside__categories" href="./" data-path="three">
               <img class="aside__categories-image" src="img/discounted.svg" alt="discounted" width="25" height="25" data-path="three">
               <span class="aside__categories-text" data-path="three">Уцененные товары</span>
             </a>
@@ -105,11 +112,11 @@
   <footer class="footer">
     <div class="container">
       <div class="footer__content-inner">
-        <a class="header__content-phone" href="tel:+79999999999">
-          +7 (999) 999-99-99
+        <a class="header__content-phone" href="<?= $tel_href ?>">
+          <?= $tel ?>
         </a>
         <a class="header__content-adress" href="#" target="_blank">
-          Пермь, ул. Пушкина, 17
+          <?= $address ?>
         </a>
       </div>
     </div>
