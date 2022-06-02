@@ -74,6 +74,12 @@ const openPage = page => {
         ['admin', 'Администрирование']
     ];
 
+    // const pages = [
+    //     ['categories', 'Категории'],
+    //     ['items', 'Товары'],
+    //     ['orders', 'Заказы']
+    // ];
+
     // change aside button style
     const aside = document.querySelectorAll('aside')[0];
     const ul = aside.querySelectorAll('ul');

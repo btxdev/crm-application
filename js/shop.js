@@ -5,7 +5,7 @@ const HEADERS = {
 
 
 function sendData(args) {
-    return new Promise((res) => {
+    return new Promise((res, rej) => {
         const method = 'method' in args ? args['method'] : 'POST';
         const headers = 'headers' in args ? args['headers'] : HEADERS;
         const body =  JSON.stringify(args['body']);
@@ -32,6 +32,9 @@ function sendData(args) {
             console.log(data);
             if(data['status'] == 'OK') {
                 thenFunc(data);
+            }
+            else {
+              catchFunc(data);
             }
             res(data);
         })
@@ -65,6 +68,7 @@ function setAnimation() {
 document.addEventListener('DOMContentLoaded', () => {
 
   getCats();
+  getBasketPrice();
 
 });
 
@@ -101,9 +105,10 @@ function getCats() {
           console.log(item);
 
           let hasItem = item['count'] > 0;
-          let itemMsg = hasItem ? `В наличии, ${item['count']}` : 'Нет в наличии';
+          let itemMsg = hasItem ? `В наличии, ${item['count']} шт.` : 'Нет в наличии';
           let hasItemClass = hasItem ? '' : 'not-availability';
           let basketDisabled = hasItem ? '' : 'basket-disabled';
+          let func = hasItem ? `onclick="addItemToBasket(${item['item_id']}, this, ${item['price']});"` : '';
           
           catalog += `
             <li class="catalog__product-item">
@@ -118,7 +123,7 @@ function getCats() {
               </div>
               <div class="catalog__product-price price-wrapper">
                 <span class="price-text price-disabled">${item['price']} ₽</span>
-                <button class="price-basket ${basketDisabled}">В корзину</button>
+                <button class="price-basket ${basketDisabled}" ${func}>В корзину</button>
               </div>
             </li>
           `;
@@ -143,4 +148,44 @@ function getCats() {
       setAnimation();
     })
 
+}
+
+function addItemToBasket(id, elem, price) {
+  // if(typeof elem != 'undefined') {
+  //   //elem.classList.add('basket-disabled');
+  //   //elem.removeAttribute('onclick');
+  // }
+  
+
+  sendData({
+      body: {
+          op: 'add_item_to_basket',
+          id: id
+      },
+      catch: (err) => {
+          console.log(err);
+          alert('Товар уже добавлен');
+      }
+  })
+  .then(() => {
+    if(typeof price != 'undefined') {
+      let basketTotal = Number(document.getElementById('basket-total').innerHTML);
+      document.getElementById('basket-total').innerHTML = basketTotal + price;
+    }
+    alert('Товар добавлен в корзину');
+  })
+}
+
+function getBasketPrice() {
+  sendData({
+      body: {
+          op: 'get_basket_price'
+      },
+      catch: (err) => {
+          console.log(err);
+      }
+  })
+  .then((serverData) => {
+    document.getElementById('basket-total').innerHTML = serverData['price'];
+  })
 }

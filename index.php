@@ -60,7 +60,7 @@ $authorized = $access->checkSessionCookie($settings->get('session_name'));
                 <ul class="nav__list list-reset">
                   <li class="nav__item">
                     <img src="img/basket.svg" alt="basket" width="21" height="16">
-                    <span class="nav__basket-sum nav__price">0</span>
+                    <span class="nav__basket-sum nav__price" id="basket-total">0</span>
                     <span class="nav__rub nav__price">₽</span>
                   </li>
                 </ul>
@@ -130,7 +130,7 @@ $authorized = $access->checkSessionCookie($settings->get('session_name'));
                   <span class="card__availability">Товар в наличии</span>
                 </div>
                 <div class="catalog__product-price price-wrapper">
-                  <span class="price-text">1215 ₽</span>
+                  <span class="price-text">0 ₽</span>
                   <button class="price-basket">В корзину</button>
                 </div>
               </li>

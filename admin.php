@@ -83,14 +83,14 @@ function component($name) {
                         <div class="aside-li__icon" style="background-image: url(img/order-icon.png)"></div>
                         <div class="aside-li__label">Заказы</div>
                     </li>
-                    <li class="aside-li" onclick="openPage('users');">
+                    <li class="aside-li" onclick="openPage('users');" style="display: none;">
                         <div class="aside-li__icon" style="background-image: url(img/user-icon.png)"></div>
                         <div class="aside-li__label">Пользователи</div>
                     </li>
                 </ul>
-                <div class="aside-line"></div>
+                <!--<div class="aside-line"></div>-->
                 <ul class="aside-ul">
-                    <li class="aside-li" onclick="openPage('admin');">
+                    <li class="aside-li" onclick="openPage('admin');" style="display: none;">
                         <div class="aside-li__icon" style="background-image: url(img/admin-icon.png)"></div>
                         <div class="aside-li__label">Администрирование</div>
                     </li>
