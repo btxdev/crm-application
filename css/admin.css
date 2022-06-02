@@ -1,3 +1,21 @@
+:root {
+    --main-bg-color: #363636;
+    --main-title-color: #d9dbe7;
+    --main-regular-color: #d5d5d5;
+    --aside-bg-color: #2f312f;
+    /* --btn-accept-bg-color: #60378d; */
+    --btn-accept-bg-color: #595483;
+    --btn-accept-bg-color-hover: #93889e;
+    --btn-accept-color: #ffffff;
+    --btn-cancel-bg-color: #885252;
+    --btn-cancel-bg-color-hover: #aa9292;
+    --btn-cancel-color: #ffffff;
+    --aside-header-bg-color: #58506e;
+    /* --popup-bg-color: #453d4c; */
+    --popup-bg-color: #363636;
+    --input-bg-color: #474548;
+}
+
 body, html {
     font-family: 'Ubuntu', sans-serif;
 }
@@ -13,7 +31,7 @@ body, html {
 }
 .container {
 	display: flex;
-	flex-flow: row-reverse wrap;
+	flex-flow: row wrap;
 	width: 100%;
 	margin: auto;
 }
@@ -27,7 +45,8 @@ aside {
     background: #2f312f;
 }	
 main {
-    background: #F7F8FC;
+    /* background: #F7F8FC; */
+    background-color: var(--main-bg-color);
 }
 @media (min-width: 600px) {
     main {
@@ -41,7 +60,7 @@ main {
 /* sidebar start */
 
 .aside-title {
-    margin-top: 37px;
+    /* margin-top: 37px; */
     margin-bottom: 37px;
     width: 100%;
     display: flex;
@@ -50,6 +69,8 @@ main {
     align-content: center;
     justify-content: center;
     align-items: center;
+    background-color: var(--btn-accept-bg-color);
+    height: 100px;
 }
 .aside-title__logo {
     width: 40px;
@@ -64,7 +85,8 @@ main {
     font-size: 16px;
     font-weight: 500;
     opacity: 0.7;
-    color: #A4A6B3;
+    /* color: #A4A6B3; */
+    color: white;
     line-height: 23px;
     left: 76px;
 }
@@ -135,7 +157,8 @@ main {
 .header__title {
     font-size: 24px;
     font-weight: bold;
-    color: #252733;
+    /* color: #252733; */
+    color: var(--main-title-color);
 }
 .header__profile {
     /* display: flex; */
@@ -195,26 +218,31 @@ main {
     width: calc(100% - 60px);
 }
 .employees-table__title-row {
-    background-color: white;
+    /* background-color: white; */
     border-radius: 8px;
     margin: 10px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 3px solid #534e60;
+    background-color: #3e3c44;
 }
 .employees-table tr {
-    background-color: white;
+    /* background-color: white; */
+    background-color: #474548;
     border-radius: 8px;
     margin: 10px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 3px solid #534e60;
 }
 .employees-table .title {
     font-size: 14px;
-    color: #252733;
+    /* color: #252733; */
+    color: var(--main-title-color);
     font-weight: bold;
 }
 .employees-table tr {
@@ -223,7 +251,8 @@ main {
 }
 .employees-table td {
     font-size: 14px;
-    color: #252733;
+    /* color: #252733; */
+    color: var(--main-regular-color);
     font-weight: 500;
     width: 180px;
     margin-left: 10px;
@@ -232,13 +261,14 @@ main {
     font-family: Ubuntu;
     font-weight: 500;
     font-size: 13px;
-    color: #fff;
+    /* color: #fff; */
+    color: var(--btn-accept-color);
     line-height: 1.2;
     text-transform: uppercase;
     padding: 0 20px;
     min-width: 200px;
     height: 42px;
-    background-color: #3da936;
+    background-color: var(--btn-accept-bg-color);
     border-radius: 3px;
     transition: all .4s;
     cursor: pointer;
@@ -246,7 +276,7 @@ main {
     margin-left: 40px;
 }
 .employees-btn:hover {
-    background-color: #397534;
+    background-color: var(--btn-accept-color-hover);
 }
 .employees-table button {
     font-family: Ubuntu;
@@ -258,24 +288,28 @@ main {
     padding: 0 20px;
     min-width: 150px;
     height: 24px;
-    background-color: #3da936;
+    /* background-color: #3da936; */
+    background-color: var(--btn-accept-bg-color);
     border-radius: 3px;
     transition: all .4s;
     cursor: pointer;
     border: none;
 }
 .employees-table button:hover {
-    background-color: #397534;
+    /* background-color: #397534; */
+    background-color: var(--btn-accept-bg-color-hover);
 }
 
 /* services content */
 .table-btn__remove {
-    background-color: #f35e5e !important;
+    /* background-color: #f35e5e !important; */
+    background-color: var( --btn-cancel-bg-color) !important;
     margin-left: -10px;
     min-width: 100px !important;
 }
 .table-btn__remove:hover {
-    background-color: #885252 !important;
+    /* background-color: #885252 !important; */
+    background-color: var( --btn-cancel-bg-color-hover) !important;
 }
 .services-table {
     width: 500px;
@@ -284,12 +318,14 @@ main {
 /* contracts content */
 .search__input {
     font-weight: 400;
-    color: #403866;
+    /* color: #403866; */
+    color: var(--main-regular-color);
     line-height: 1.2;
     font-size: 16px;
     display: block;
     width: 200px;
-    background: white;
+    /* background: white; */
+    background: #3e3c44;
     padding: 6px;
     margin: 3px;
     border: none;
@@ -303,13 +339,15 @@ main {
     font-family: Ubuntu;
     font-weight: 500;
     font-size: 13px;
-    color: #fff;
+    /* color: #fff; */
+    color: var(--main-regular-color);
     line-height: 1.2;
     text-transform: uppercase;
     padding: 0 20px;
     min-width: 100px;
     height: 28px;
-    background-color: #3da936;
+    /* background-color: #3da936; */
+    background-color: var(--btn-accept-bg-color);
     border-radius: 3px;
     transition: all .4s;
     cursor: pointer;
@@ -319,7 +357,8 @@ main {
     margin-top: 0;
 }
 .search__button:hover {
-    background-color: #397534;
+    /* background-color: #397534; */
+    background-color: var(--btn-accept-bg-hover);
 }
 
 .categories-table {
@@ -369,7 +408,8 @@ main {
     /* min-height: 300px; */
     border-radius: 8px;
     position: relative;
-    background-color: #F7F8FC;
+    /* background-color: #F7F8FC; */
+    background-color: var(--popup-bg-color);
     box-shadow: 5px 5px 11px -2px rgba(0,0,0,0.2);
     transition: all 0.4s;
     z-index: 12;
@@ -382,15 +422,18 @@ main {
     font-size: 20px;
     margin-left: 20px;
     font-weight: 600;
-    color: #252733;
+    /* color: #252733; */
+    color: var(--main-title-color);
     margin-top: 20px;
     margin-bottom: 20px;
 }
 .emp-id {
     font-size: 14px;
     font-weight: 200;
-    background-color: #e3e3e3;
-    color: #252733;
+    /* background-color: #e3e3e3; */
+    /* color: #252733; */
+    background-color: var(--input-bg-color);
+    color: var(--main-regular-color);
     border-radius: 4px;
     display: inline-block;
     padding-left: 10px;
@@ -403,7 +446,8 @@ main {
     margin: 20px;
     width: calc(100% - 40px);
     margin-top: 0;
-    color: #252733;
+    /* color: #252733; */
+    color: var(--main-regular-color);
 }
 .popup-table td {
     width: 50%;
@@ -411,8 +455,10 @@ main {
 .popup-table span {
     font-weight: 500;
     font-size: 16px;
-    color: #252733;
-    background-color: white;
+    /* color: #252733;
+    background-color: white; */
+    background-color: var(--input-bg-color);
+    color: var(--main-regular-color);
     border-radius: 2px;
     padding: 6px;
     margin: 3px;
@@ -421,12 +467,14 @@ main {
 }
 .popup-table input {
     font-weight: 400;
-    color: #403866;
+    /* color: #403866; */
     line-height: 1.2;
     font-size: 16px;
     display: block;
     width: 100%;
-    background: white;
+    /* background: white; */
+    background-color: var(--input-bg-color);
+    color: var(--main-regular-color);
     padding: 6px;
     margin: 3px;
     border: none;
@@ -443,7 +491,8 @@ main {
     padding: 0 20px;
     min-width: 150px;
     height: 24px;
-    background-color: #3da936;
+    /* background-color: #3da936; */
+    background-color: var(--btn-accept-bg-color);
     border-radius: 3px;
     transition: all .1s;
     cursor: pointer;
@@ -452,10 +501,12 @@ main {
     margin-bottom: 20px;
 }
 .popup-apply {
-    background-color: #43b526;
+    /* background-color: #43b526; */
+    background-color: var(--btn-accept-bg-color);
 }
 .popup-apply:hover {
-    background-color: #52885b;
+    /* background-color: #52885b; */
+    background-color: var(--btn-accept-bg-color-hover);
 }
 .popup-cancel {
     background-color: #f35e5e;
@@ -468,18 +519,20 @@ select {
     font-family: inherit;
     cursor: inherit;
     font-weight: 400;
-    color: #403866;
+    /* color: #403866; */
     line-height: 1.2;
     font-size: 16px;
     display: block;
     width: 100%;
-    background: white;
+    /* background: white; */
     padding: 6px;
     padding-top: 5px;
     margin: 3px;
     border: none;
     outline: none;
     height: 28px;
+    background-color: var(--input-bg-color);
+    color: var(--main-regular-color);
 }
 .popup-message {
     font-size: 14px;
@@ -493,26 +546,30 @@ select {
 }
 .popup-p {
     font-weight: 400;
-    color: #252733;
+    /* color: #252733; */
     line-height: 1.2;
     font-size: 16px;
     display: block;
     width: calc(100% - 40px);
-    background: white;
+    /* background: white; */
     padding: 6px;
     margin-left: 23px;
     border: none;
     outline: none;
     height: 28px;
+    background-color: var(--input-bg-color);
+    color: var(--main-regular-color);
 }
 .popup-textarea {
-    color: #252733;
+    /* color: #252733; */
     margin: 10px;
     margin-left: 23px;
     width: calc(100% - 40px);
     height: 100px;
     resize: none;
     outline: none;
+    background-color: var(--input-bg-color);
+    color: var(--main-regular-color);
 }
 
 /* popup end */

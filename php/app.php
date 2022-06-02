@@ -296,7 +296,50 @@ if(isset($decoded['op'])) {
         $result = new Status('OK');
         exit(json_encode($result));
     }
-    
+
+    // === заказы ===
+
+    if($decoded['op'] == 'get_orders') {
+        $rows = $db->fetchAll("SELECT * FROM `orders` WHERE `status` = 'wait'");
+        $orders = [];
+        foreach ($rows as $row) {
+            array_push($items, [
+               'id' => $row['order_id'],
+               'status' => $row['status'],
+               'order_date' => $row['order_date']
+            ]);
+        }
+        $data = [
+            'status' => 'OK',
+            'orders' => $orders
+        ];
+        exit(json_encode($data));
+    }
+
+    if($decoded['op'] == 'get_item_data') {
+
+        requireFields(['id']);
+
+        $row = $db->fetch(
+            'SELECT * FROM `items` 
+            WHERE `item_id` = :id',
+            [
+                ':id' => $decoded['id']
+            ]
+        );
+        $data = [
+            'status' => 'OK',
+            'data' => [
+                'id' => $row['item_id'],
+                'title' => $row['title'],
+                'description' => $row['description'],
+                'link' => $row['image'],
+                'count' => $row['count'],
+                'price' => $row['price']
+            ]
+        ];
+        exit(json_encode($data));
+    }
 
 }
 
