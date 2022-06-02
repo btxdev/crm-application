@@ -296,6 +296,33 @@ function removeCategory(id) {
     })
 }
 
+function editCategory(id, title, link) {
+    sendData({
+        body: {
+            op: 'edit_category',
+            id: id,
+            title: title,
+            link: link
+        }
+    })
+    .then(() => {
+        closePopup();
+        updateCategories();
+    })
+}
+
+function editCategoryForm(id) {
+    console.log(id);
+    const title = document.getElementById('input-editCategory-name').value;
+    const link = document.getElementById('input-editCategory-link').value;
+    editCategory(id, title, link);
+}
+
+function removeEventListenersFrom(element) {
+    let clone = element.cloneNode(true);
+    element.parentNode.replaceChild(clone, element);
+}
+
 function replacePopupData(type, id) {
     switch(type) {
         case 'categories':
@@ -305,10 +332,19 @@ function replacePopupData(type, id) {
                     id: id
                 }
             })
-            .then(() => {
-                $title = document.getElementById('input-editCategory-name');
-                $link = document.getElementById('input-editCategory-link');
-                
+            .then(response => {
+                const $title = document.getElementById('input-editCategory-name');
+                const $link = document.getElementById('input-editCategory-link');
+                let $button = document.getElementById('btn-editCategory');
+                const title = response['data']['title'];
+                const link = response['data']['icon'];
+                $title.value = title;
+                $link.value = link;
+                removeEventListenersFrom($button);
+                $button = document.getElementById('btn-editCategory');
+                $button.addEventListener('click', (e) => {
+                    editCategoryForm(id);
+                });
             })
             break;
     }
