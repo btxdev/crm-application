@@ -6,7 +6,7 @@ $html_title = $settings->get('admin_title');
 
 $authorized = $access->checkSessionCookie($settings->get('session_name'));
 if (!$authorized) {
-    header('Location: auth');
+    header('Location: admin-auth');
 }
 
 function component($name) {

@@ -49,14 +49,14 @@ class Admin extends Database {
     // связь один ко многим
     function relation_1N($table1, $table2, $key1, $key2) {
 
-        $new_table  = $table2.'_'.$table1;
+        $new_table  = $table1.'_'.$table2;
         $this->dropTable($new_table);
 
         // создание таблицы
         $this->run(
             "CREATE TABLE `{$new_table}` ( 
-                `{$key2}` INT UNSIGNED NOT NULL , 
                 `{$key1}` INT UNSIGNED NOT NULL , 
+                `{$key2}` INT UNSIGNED NOT NULL , 
                 PRIMARY KEY (`{$key2}`)
             ) 
             ENGINE = InnoDB;",
@@ -69,7 +69,35 @@ class Admin extends Database {
 
     // связь многие ко многим
     function relation_NN($table1, $table2, $key1, $key2) {
-        $this->relation_1N($table1, $table2, $key1, $key2);
+
+        $new_table  = $table1.'_'.$table2;
+        $index_name = $key1.'_'.$key2;
+        $this->dropTable($new_table);
+
+        // создание таблицы
+        $this->run(
+            "CREATE TABLE `{$new_table}` ( 
+                `{$key1}` INT UNSIGNED NOT NULL , 
+                `{$key2}` INT UNSIGNED NOT NULL , 
+                INDEX `{$index_name}` (`{$key1}`, `{$key2}`)
+            ) 
+            ENGINE = InnoDB;",
+        );
+
+        // установка связей
+        $this->relation_alter($new_table, $table1, $table2, $key1, $key2);
+
+        // // установка связи между таблицами table1 и table2_table1 по индексу key1
+        // $this->run(
+        //     "ALTER TABLE `{$new_table}` ADD CONSTRAINT `{$key1}` FOREIGN KEY (`{$key1}`) 
+        //     REFERENCES `{$table1}`(`{$key1}`) ON DELETE CASCADE ON UPDATE CASCADE;"
+        // );
+        // // установка связи между таблицами table2 и table2_table1 по индексу key2
+        // $this->run(
+        //     "ALTER TABLE `{$new_table}` ADD CONSTRAINT `{$key2}` FOREIGN KEY (`{$key2}`) 
+        //     REFERENCES `{$table2}`(`{$key2}`) ON DELETE CASCADE ON UPDATE CASCADE;"
+        // );
+
     }
 
     // получить id пользователя по его username
@@ -160,7 +188,7 @@ class Admin extends Database {
         $role_id = intval($rows['role_id']);
         // создание записи в БД
         $this->run(
-            'INSERT IGNORE INTO users_roles 
+            'INSERT IGNORE INTO roles_users
             (uuid, role_id)
             VALUES (:uuid, :role_id)',
             [

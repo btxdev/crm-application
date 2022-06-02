@@ -162,13 +162,24 @@ ul {
 }
 
 .nav {
-  width: 120px;
+  width: auto;
   height: 43px;
-  background-color: #0da119;
+  background-color: #666666;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
 }
 
 .nav__list {
   cursor: pointer;
+  width: 100px;
 }
 
 .nav__item {
@@ -188,6 +199,7 @@ ul {
       -ms-flex-direction: row;
           flex-direction: row;
   height: 43px;
+  background-color: #0da119;
 }
 
 .nav__item img {
@@ -203,6 +215,10 @@ ul {
 
 .nav__price + .nav__price {
   margin-left: 8px;
+}
+
+.nav__link + .nav__link {
+  margin-left: 15px;
 }
 
 .catalog {

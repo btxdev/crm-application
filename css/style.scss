@@ -131,11 +131,16 @@ ul {
  
 }
 .nav {
-  width: 120px;
+  width: auto;
   height: 43px;
-  background-color: #0da119;
+  // background-color: #0da119;
+  background-color: #666666;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
   &__list {
     cursor: pointer;
+    width: 100px;
   }
   &__item {
     display: flex;
@@ -144,6 +149,7 @@ ul {
     flex-wrap: nowrap;
     flex-direction: row;
     height: 43px;
+    background-color: #0da119;
     & img {
       margin-right: 5px;
     }
@@ -157,6 +163,9 @@ ul {
   &__price + &__price {
     margin-left: 8px;
   }
+}
+.nav__link + .nav__link {
+  margin-left: 15px;
 }
 .catalog {
   margin-top: 60px;

@@ -1,8 +1,17 @@
 <?php
 
+include_once __DIR__.'/php/include_db.php';
+
+$html_title = $settings->get('shop_title');
+
 $tel = 'null';
 $tel_href = 'tel:';
 $address = 'null';
+
+$authorized = $access->checkSessionCookie($settings->get('session_name'));
+// if ($authorized) {
+//     header('Location: ./');
+// }
 
 ?>
 <!DOCTYPE html>
@@ -38,15 +47,37 @@ $address = 'null';
           </a>
         </div>
         <nav class="nav">
-          <a href="basket">
-            <ul class="nav__list list-reset">
-              <li class="nav__item">
-                <img src="img/basket.svg" alt="basket" width="21" height="16">
-                <span class="nav__basket-sum nav__price">1215</span>
-                <span class="nav__rub nav__price">₽</span>
-              </li>
-            </ul>
-          </a>
+          <?php if($authorized): ?>
+
+              <a href="./logout" class="nav__link">
+                <ul class="nav__list list-reset">
+                  <li class="nav__item">
+                    <span class="nav__basket-sum nav__price">ВЫХОД</span>
+                  </li>
+                </ul>
+              </a>
+              <a href="basket" class="nav__link">
+                <ul class="nav__list list-reset">
+                  <li class="nav__item">
+                    <img src="img/basket.svg" alt="basket" width="21" height="16">
+                    <span class="nav__basket-sum nav__price">0</span>
+                    <span class="nav__rub nav__price">₽</span>
+                  </li>
+                </ul>
+              </a>
+
+          <?php else: ?>
+
+              <a href="./login" class="nav__link">
+                <ul class="nav__list list-reset">
+                  <li class="nav__item">
+                    <span class="nav__basket-sum nav__price">ВХОД</span>
+                  </li>
+                </ul>
+              </a>
+
+          <?php endif; ?>
+
         </nav>
       </div>
     </div>
@@ -56,7 +87,7 @@ $address = 'null';
     <section class="catalog">
       <div class="container">
         <div class="catalog__inner">
-          <aside class="catalog__aside aside">
+          <aside class="catalog__aside aside" id="categories">
             <a class="aside__categories aside__categories--active" data-path="one">
               <img class="aside__categories-image" src="img/kits.svg" alt="kits" width="25" height="25" data-path="one">
               <span class="aside__categories-text" data-path="one">Наборы и констукторы</span>
@@ -70,7 +101,7 @@ $address = 'null';
               <span class="aside__categories-text" data-path="three">Уцененные товары</span>
             </a>
           </aside>
-          <div class="catalog__product">
+          <div class="catalog__product" id="catalog">
             <ul class="catalog__product-list catalog__product-list--active" data-target="one">
               <h3 class="catalog__product-title">Наборы и констукторы</h3>
               <li class="catalog__product-item">
