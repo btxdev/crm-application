@@ -1,0 +1,27 @@
+<!-- Просмотреть информацию о заказе -->
+<div class="popup" id="popup-order-view" style="display: none;">
+    <div class="popup-title">Информация о заказе</div>
+    <table class="popup-table">
+        <tr>
+            <td><span>Статус</span></td>
+            <td><input type="text" placeholder="Статус заказа" id="input-viewOrder-status" value="Ожидает исполнения"></td>
+        </tr>
+        <tr>
+            <td><span>Дата заказа</span></td>
+            <td><input type="date" id="input-viewOrder-date"></td>
+        </tr>
+    </table>
+    <p class="popup-p">Товары в заказе</p>
+    <table class="popup-table" id="input-viewOrder-table">
+        <tr>
+            <td><span>Товар</span></td>
+            <td><span>Количество</span></td>
+        </tr>
+        <tr>
+            <td><span>Товар</span></td>
+            <td><span>Количество</span></td>
+        </tr>
+    </table>
+    <button class="popup-apply" id="btn-viewOrder">Заказ выполнен</button>
+    <button class="popup-cancel" onclick="closePopup();">Закрыть</button>
+</div>

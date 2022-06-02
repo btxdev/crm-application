@@ -59,6 +59,7 @@ function component($name) {
 
                     <?php component('popup/categories'); ?>
                     <?php component('popup/items'); ?>
+                    <?php component('popup/orders'); ?>
                     
                 </div>
 
