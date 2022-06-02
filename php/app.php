@@ -50,7 +50,7 @@ if(isset($decoded['op'])) {
 
         // получить всю информацию о текущем пользователе
         $rows = $db->fetch(
-            'SELECT * FROM `employees` WHERE `employee_id` = :uuid',
+            'SELECT * FROM `users` WHERE `uuid` = :uuid',
             [
                 ':uuid' => $current_uuid
             ]
@@ -60,7 +60,7 @@ if(isset($decoded['op'])) {
             'uuid' => $current_uuid,
             'username' => $rows['username'],
             'first_name' => $rows['first_name'],
-            'second_name' => $rows['seconds_name'],
+            'second_name' => $rows['second_name'],
             'patronymic' => $rows['patronymic'],
             'phone' => $rows['phone'],
             'email' => $rows['email']
@@ -68,7 +68,64 @@ if(isset($decoded['op'])) {
         exit(json_encode($data));
     }
 
-    // === сотрудники ===
+    // === категории ===
+    if($decoded['op'] == 'add_category') {
+
+        requireFields(['title', 'link']);
+        
+        // $titleStatus = $validate->name($decoded['title']);
+        // if($titleStatus->ok()) {
+        //     $title = $titleStatus->returnValue;
+        // }
+        // else {
+        //     $err = new Status('WRONG_FORMAT');
+        //     exit($err->json());
+        // }
+
+        $title = $decoded['title'];
+        $link = $decoded['link'];
+
+        $data = $db->fetch(
+            'INSERT INTO `categories` (title, icon) 
+            VALUES (:title, :icon)',
+            [
+                ':title' => $title,
+                ':icon' => $link
+            ]
+        );
+
+        $res = new Status('OK', $title);
+        exit($res->json());
+
+    }
+
+    if($decoded['op'] == 'get_categories') {
+        $rows = $db->fetchAll('SELECT * FROM `categories`');
+        $cats = [];
+        foreach ($rows as $row) {
+            array_push($cats, [
+               'id' => $row['category_id'],
+               'title' => $row['title'] 
+            ]);
+        }
+        $data = [
+            'status' => 'OK',
+            'categories' => $cats
+        ];
+        exit(json_encode($data));
+    }
+
+    if($decoded['op'] == 'remove_category') {
+        $rows = $db->fetchAll(
+            'DELETE FROM `categories` 
+            WHERE `category_id` = :id',
+            [
+                ':id' => $decoded['id']
+            ]
+        );
+        $result = new Status('OK');
+        exit(json_encode($result));
+    }
     
 
 }

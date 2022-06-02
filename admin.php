@@ -36,7 +36,7 @@ function component($name) {
         <div class="container">
             <main>
                 <div class="header">
-                    <div class="header__title" id="header-title">Заголовок</div>
+                    <div class="header__title" id="header-title">Категории</div>
                     <div class="header__profile">
                         <div class="header__username" id="header-username">username</div>
                         <div class="header__line"></div>
@@ -57,6 +57,8 @@ function component($name) {
 
                 <div id="windows" style="display: none;">
 
+                    <?php component('popup/categories'); ?>
+                    
                 </div>
 
             </main>

@@ -30,6 +30,12 @@ class Database extends PDO {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    function fetchAll($sql, $args = null) {
+        $stmt = $this->run($sql, $args);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
     
     // генератор случайных строк с указанной длинной
     function strgen($alphabet = '0123456789abcdef', $len = 8) {

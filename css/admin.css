@@ -318,6 +318,17 @@ main {
     background-color: #403866;
 }
 
+.categories-table {
+    width: 860px;
+}
+.categories-table tr {
+    justify-content: flex-start;
+    width: 95%;
+}
+.categories-table .td-wide {
+    width: 500px;
+}
+
 /* content end */
 
 /* popup start */
@@ -351,7 +362,7 @@ main {
 }
 .popup {
     width: 600px;
-    min-height: 300px;
+    /* min-height: 300px; */
     border-radius: 8px;
     position: relative;
     background-color: #F7F8FC;

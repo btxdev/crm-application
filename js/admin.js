@@ -1,14 +1,61 @@
 const POPUP_TIME = 500;
 
+addEventListener('DOMContentLoaded', () => {
+
+    document.querySelector('#windows')
+        .addEventListener('click', (event) => {
+            if(event.target.id == 'windows') {
+                closePopup();
+            }
+        });
+
+    getBasicInfo();
+    updateCategories();
+
+});
+
+function sendData(args) {
+    return new Promise((res) => {
+        const method = 'method' in args ? args['method'] : 'POST';
+        const headers = 'headers' in args ? args['headers'] : HEADERS;
+        const body =  JSON.stringify(args['body']);
+        const thenFunc = 'then' in args ? args['then'] : () => {};
+        const catchFunc = 'catch' in args ? args['catch'] : () => {};
+        fetch('php/app.php', {
+            method: method,
+            headers: headers,
+            body: body
+        })
+        .then(response => response.text())
+        .then(body => {
+            console.log('raw response data:');
+            console.log(body);
+            try {
+                return JSON.parse(body);
+            }
+            catch {
+                throw Error(body);
+            }
+        })
+        .then(data => {
+            console.log('JSON response data:');
+            console.log(data);
+            if(data['status'] == 'OK') {
+                thenFunc(data);
+            }
+            res(data);
+        })
+        .catch(catchFunc);
+    })
+}
+
 const openPage = page => {
 
     const pages = [
-        ['employees', 'Сотрудники'],
-        ['services', 'Услуги'],
-        ['contracts', 'Договоры'],
-        ['deals', 'Сделки'],
-        ['apartments', 'Недвижимость'],
-        ['clients', 'Клиенты'],
+        ['categories', 'Категории'],
+        ['items', 'Товары'],
+        ['orders', 'Заказы'],
+        ['users', 'Пользователи'],
         ['admin', 'Администрирование']
     ];
 
@@ -177,15 +224,92 @@ function getBasicInfo() {
     .catch(console.error);
 }
 
-addEventListener('DOMContentLoaded', () => {
+function updateCategories() {
+    sendData({
+        body: {
+            op: 'get_categories'
+        }
+    })
+    .then(response => {
+        const items = response['categories'];
+        const $table = document.getElementById('categories-table');
+        let content = `
+            <tr class="employees-table__title-row">
+                    <td style="width: 20px;"><div class="title">#</div></td>
+                    <td class="td-wide"><div class="title">Наименование категории</div></td>
+                    <td style="width: 100px;"><div class="title"></div></td>
+                    <td style="width: 100px;"><div class="title"></div></td>
+            </tr>
+            `;
+        for(item of items) {
+            content += `
+                <tr>
+                    <td style="width: 20px;"><div class="field">${item['id']}</div></td>
+                    <td class="td-wide"><div class="field">${item['title']}</div></td>
+                    <td style="width: 160px;"><button onclick="openPopup('popup-category-edit'); replacePopupData('categories', '${item['id']}')">Редактировать</button></td>
+                    <td style="width: 100px;"><button class="table-btn__remove" onclick="removeCategory('${item['id']}');">Удалить</button></td>
+                </tr>
+                `;
+        }
+        $table.innerHTML = content;
+    })
+}
 
-    document.querySelector('#windows')
-        .addEventListener('click', (event) => {
-            if(event.target.id == 'windows') {
-                closePopup();
+function addCategory(title, link) {
+    return new Promise((resolve, reject) => {
+        sendData({
+            body: {
+                op: 'add_category',
+                title: title,
+                link: link
             }
-        });
+        })
+        .then(() => { resolve(); })
+        .catch(() => { reject(); })
+    })
+}
 
-    getBasicInfo();
+function addCategoryForm() {
+    const $title = document.getElementById('input-addCategory-name');
+    const $link = document.getElementById('input-addCategory-link');
+    let title = $title.value;
+    let link = $link.value;
+    addCategory(title, link)
+    .then(() => {
+        closePopup();
+        updateCategories();
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+}
 
-});
+function removeCategory(id) {
+    sendData({
+        body: {
+            op: 'remove_category',
+            id: id
+        }
+    })
+    .then(() => {
+        updateCategories();
+    })
+}
+
+function replacePopupData(type, id) {
+    switch(type) {
+        case 'categories':
+            sendData({
+                body: {
+                    op: 'get_category_data',
+                    id: id
+                }
+            })
+            .then(() => {
+                $title = document.getElementById('input-editCategory-name');
+                $link = document.getElementById('input-editCategory-link');
+                
+            })
+            break;
+    }
+}

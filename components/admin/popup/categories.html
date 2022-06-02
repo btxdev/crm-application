@@ -1,0 +1,33 @@
+<!-- Добавить категорию -->
+<div class="popup" id="popup-category-add" style="display: none;">
+    <div class="popup-title">Добавить категорию</div>
+    <table class="popup-table">
+        <tr>
+            <td><span>Наименование</span></td>
+            <td><input type="text" placeholder="Наименование категории" id="input-addCategory-name"></td>
+        </tr>
+        <tr>
+            <td><span>Иконка</span></td>
+            <td><input type="text" placeholder="Ссылка" id="input-addCategory-link"></td>
+        </tr>
+    </table>
+    <button class="popup-apply" onclick="addCategoryForm();">Добавить</button>
+    <button class="popup-cancel" onclick="closePopup();">Отмена</button>
+</div>
+
+<!-- Редактировать информацию о категории -->
+<div class="popup" id="popup-category-edit" style="display: none;">
+    <div class="popup-title">Информация о категории</div>
+    <table class="popup-table">
+        <tr>
+            <td><span>Наименование</span></td>
+            <td><input type="text" placeholder="Наименование категории" id="input-editCategory-name"></td>
+        </tr>
+        <tr>
+            <td><span>Иконка</span></td>
+            <td><input type="text" placeholder="Ссылка" id="input-editCategory-link"></td>
+        </tr>
+    </table>
+    <button class="popup-apply" onclick="editCategoryForm();">Сохранить</button>
+    <button class="popup-cancel" onclick="closePopup();">Отмена</button>
+</div>
