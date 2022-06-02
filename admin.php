@@ -71,30 +71,30 @@ function component($name) {
                 </div>
                 <ul class="aside-ul">
                     <li class="aside-li aside-li_focused" onclick="openPage('categories');">
-                        <div class="aside-li__icon"></div>
+                        <div class="aside-li__icon" style="background-image: url(img/category-icon.png)"></div>
                         <div class="aside-li__label">Категории</div>
                     </li>
                     <li class="aside-li" onclick="openPage('items');">
-                        <div class="aside-li__icon"></div>
+                        <div class="aside-li__icon" style="background-image: url(img/item-icon.png)"></div>
                         <div class="aside-li__label">Товары</div>
                     </li>
                     <li class="aside-li" onclick="openPage('orders');">
-                        <div class="aside-li__icon"></div>
+                        <div class="aside-li__icon" style="background-image: url(img/order-icon.png)"></div>
                         <div class="aside-li__label">Заказы</div>
                     </li>
                     <li class="aside-li" onclick="openPage('users');">
-                        <div class="aside-li__icon"></div>
+                        <div class="aside-li__icon" style="background-image: url(img/user-icon.png)"></div>
                         <div class="aside-li__label">Пользователи</div>
                     </li>
                 </ul>
                 <div class="aside-line"></div>
                 <ul class="aside-ul">
                     <li class="aside-li" onclick="openPage('admin');">
-                        <div class="aside-li__icon"></div>
+                        <div class="aside-li__icon" style="background-image: url(img/admin-icon.png)"></div>
                         <div class="aside-li__label">Администрирование</div>
                     </li>
                     <li class="aside-li" onclick="logout();">
-                        <div class="aside-li__icon"></div>
+                        <div class="aside-li__icon" style="background-image: url(img/logout-icon.png)"></div>
                         <div class="aside-li__label">Выход</div>
                     </li>
                 </ul>

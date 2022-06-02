@@ -24,7 +24,7 @@ main, aside {
     min-height: 100vh;
 }	
 aside {
-    background: #363740;
+    background: #2f312f;
 }	
 main {
     background: #F7F8FC;
@@ -58,6 +58,7 @@ main {
     background-size: cover;
     background-repeat: no-repeat;
     margin-right: 12px;
+    display: none;
 }
 .aside-title__title {
     font-size: 16px;
@@ -93,7 +94,9 @@ main {
 .aside-li__icon {
     width: 16px;
     height: 16px;
-    background-color: white;
+    background-size: contain;
+    background-repeat: no-repeat;
+    /* background-color: white; */
     margin-left: 32px;
 }
 .aside-li__label {
@@ -135,7 +138,8 @@ main {
     color: #252733;
 }
 .header__profile {
-    display: flex;
+    /* display: flex; */
+    display: none;
     align-items: center;
 }
 .header__username {
@@ -234,7 +238,7 @@ main {
     padding: 0 20px;
     min-width: 200px;
     height: 42px;
-    background-color: #827ffe;
+    background-color: #3da936;
     border-radius: 3px;
     transition: all .4s;
     cursor: pointer;
@@ -242,7 +246,7 @@ main {
     margin-left: 40px;
 }
 .employees-btn:hover {
-    background-color: #403866;
+    background-color: #397534;
 }
 .employees-table button {
     font-family: Ubuntu;
@@ -254,14 +258,14 @@ main {
     padding: 0 20px;
     min-width: 150px;
     height: 24px;
-    background-color: #827ffe;
+    background-color: #3da936;
     border-radius: 3px;
     transition: all .4s;
     cursor: pointer;
     border: none;
 }
 .employees-table button:hover {
-    background-color: #403866;
+    background-color: #397534;
 }
 
 /* services content */
@@ -305,7 +309,7 @@ main {
     padding: 0 20px;
     min-width: 100px;
     height: 28px;
-    background-color: #827ffe;
+    background-color: #3da936;
     border-radius: 3px;
     transition: all .4s;
     cursor: pointer;
@@ -315,7 +319,7 @@ main {
     margin-top: 0;
 }
 .search__button:hover {
-    background-color: #403866;
+    background-color: #397534;
 }
 
 .categories-table {
@@ -439,7 +443,7 @@ main {
     padding: 0 20px;
     min-width: 150px;
     height: 24px;
-    background-color: #827ffe;
+    background-color: #3da936;
     border-radius: 3px;
     transition: all .1s;
     cursor: pointer;
