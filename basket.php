@@ -1,8 +1,17 @@
 <?php
 
+include_once __DIR__.'/php/include_db.php';
+
+$html_title = $settings->get('shop_title');
+
 $tel = 'null';
 $tel_href = 'tel:';
 $address = 'null';
+
+$authorized = $access->checkSessionCookie($settings->get('session_name'));
+// if ($authorized) {
+//     header('Location: ./');
+// }
 
 ?>
 <!DOCTYPE html>
@@ -11,40 +20,67 @@ $address = 'null';
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Корзина</title>
+  <title>Корзина :: <?= $html_title ?></title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
   <script defer src="js/shop.js"></script>
+  <script defer src="js/basket.js"></script>
 </head>
 <body class="page__body">
   <header class="header">
-    <div class="header__content-inner">
-      <div class="header__logo-wrapper">
-        <a class="header__logo" href="./">
-          <img src="img/ardu-logo.svg" alt="logo" width="125" height="25">
-        </a>
+    <div class="container">
+      <div class="header__content-inner">
+        <div class="header__logo-wrapper">
+          <a class="header__logo" href="./">
+            <img src="img/ardu-logo.svg" alt="logo" width="125" height="25">
+          </a>
+        </div>
+        <div class="header__content">
+          <input class="header__content-search" type="text" placeholder="Поиск товаров">
+          <a class="header__content-phone" href="<?= $tel_href ?>">
+            <?= $tel ?>
+          </a>
+          <a class="header__content-adress" href="#" target="_blank">
+            <?= $address ?>
+          </a>
+        </div>
+        <nav class="nav">
+          <?php if($authorized): ?>
+
+              <a href="./logout" class="nav__link">
+                <ul class="nav__list list-reset">
+                  <li class="nav__item">
+                    <span class="nav__basket-sum nav__price">ВЫХОД</span>
+                  </li>
+                </ul>
+              </a>
+              <a href="basket" class="nav__link">
+                <ul class="nav__list list-reset">
+                  <li class="nav__item">
+                    <img src="img/basket.svg" alt="basket" width="21" height="16">
+                    <span class="nav__basket-sum nav__price" id="basket-total">0</span>
+                    <span class="nav__rub nav__price">₽</span>
+                  </li>
+                </ul>
+              </a>
+
+          <?php else: ?>
+
+              <a href="./login" class="nav__link">
+                <ul class="nav__list list-reset">
+                  <li class="nav__item">
+                    <span class="nav__basket-sum nav__price">ВХОД</span>
+                  </li>
+                </ul>
+              </a>
+
+          <?php endif; ?>
+
+        </nav>
       </div>
-      <div class="header__content">
-        <input class="header__content-search" type="text" placeholder="Поиск товаров">
-        <a class="header__content-phone" href="<?= $tel_href ?>">
-          <?= $tel ?>
-        </a>
-        <a class="header__content-adress" href="#" target="_blank">
-          <?= $address ?>
-        </a>
-      </div>
-      <nav class="nav">
-        <ul class="nav__list list-reset">
-          <li class="nav__item">
-            <img src="img/basket.svg" alt="basket" width="21" height="16">
-            <span class="nav__basket-sum nav__price">1215</span>
-            <span class="nav__rub nav__price">₽</span>
-          </li>
-        </ul>
-      </nav>
     </div>
   </header>
 
@@ -52,7 +88,7 @@ $address = 'null';
     <section class="catalog">
       <div class="container">
         <div class="catalog__inner">
-          <aside class="catalog__aside aside">
+          <aside class="catalog__aside aside" style="display: none;">
             <a class="aside__categories" href="./" data-path="one">
               <img class="aside__categories-image" src="img/kits.svg" alt="kits" width="25" height="25" data-path="one">
               <span class="aside__categories-text" data-path="one">Наборы и констукторы</span>
@@ -71,24 +107,26 @@ $address = 'null';
               <h3 class="catalog__product-title basket__title">Оформление заказа</h3>
               <li class="catalog__product-item basket__product">
                 <h5 class="basket-order__title">Ваши товары</h5>
-                <div class="basket__product-item">
-                  <span class="basket__product-item__id">1566</span>
-                  <div class="basket__product-item__image-wrap">
-                    <img class="basket__product-item__image" src="img/pozitronik.jpg" alt="Электронный конструктор Позитроник" width="45" height="45">
+                <div id="basket-items-container">
+                  <div class="basket__product-item">
+                    <span class="basket__product-item__id">1566</span>
+                    <div class="basket__product-item__image-wrap">
+                      <img class="basket__product-item__image" src="img/pozitronik.jpg" alt="Электронный конструктор Позитроник" width="45" height="45">
+                    </div>
+                    <a class="basket__product-item__title">Электронный конструктор "Позитроник"</a>
+                    <span class="basket__product-item__price">1215 ₽</span>
+                    <div class="basket__product-item__count">
+                      <div class="count-minus count-wrap">-</div>
+                      <input class="count-input" type="text">
+                      <div class="count-plus count-wrap">+</div>
+                    </div>
+                    <span class="basket__product-item__price-total">1215 ₽</span>
+                    <div class="basket__product-item__delete">x</div>
                   </div>
-                  <a class="basket__product-item__title">Электронный конструктор "Позитроник"</a>
-                  <span class="basket__product-item__price">1215 ₽</span>
-                  <div class="basket__product-item__count">
-                    <div class="count-minus count-wrap">-</div>
-                    <input class="count-input" type="text">
-                    <div class="count-plus count-wrap">+</div>
-                  </div>
-                  <span class="basket__product-item__price-total">1215 ₽</span>
-                  <div class="basket__product-item__delete">x</div>
                 </div>
                 <div class="basket__product-total total">
                   <div class="total-price">
-                    <span class="total-price__span">1215 ₽</span>
+                    <span class="total-price__span" id="basket-page-total-price">1215 ₽</span>
                   </div>
                 </div>
               </li>

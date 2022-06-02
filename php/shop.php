@@ -153,6 +153,37 @@ if(isset($decoded['op'])) {
 
     }
 
+    if($decoded['op'] == 'get_basket_items') {
+
+        $hash = $access->getSessionCookie($settings->get('session_name'));
+        $uuid = $access->getUserIdBySessionHash($hash);
+
+        // получить id заказа пользователя
+        $order = $db->fetch('SELECT `order_id` FROM `users_orders` WHERE `uuid` = :uuid', [':uuid' => $uuid]);
+        if($order == false) {
+            $result = new Status('OK', ['price' => 0]);
+            exit($result->json());
+        }
+        $order = $order['order_id'];
+
+        // получить список товаров в заказе
+        $items_ids = $db->fetchAll('SELECT * FROM `orders_items` WHERE `order_id` = :order_id', [':order_id' => $order]);
+        $items = [];
+
+        foreach($items_ids as $item_id) {
+            $item_id = $item_id['item_id'];
+            $item_data = $db->fetch('SELECT * FROM `items` WHERE `item_id` = :item_id', [':item_id' => $item_id]);
+            array_push($items, $item_data);
+        }
+
+        $data = json_encode([
+            'status' => 'OK',
+            'items' => $items
+        ]);
+        exit($data);
+
+    }
+
 }
 
 
