@@ -1,5 +1,6 @@
 const POPUP_TIME = 500;
 
+// main
 addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('#windows')
@@ -11,8 +12,21 @@ addEventListener('DOMContentLoaded', () => {
 
     getBasicInfo();
     updateCategories();
+    updateItems();
 
 });
+
+function removeEventListenersFrom(element) {
+    let clone = element.cloneNode(true);
+    element.parentNode.replaceChild(clone, element);
+}
+
+// отправка данных на сервер, обработка ответа
+
+const HEADERS = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+}
 
 function sendData(args) {
     return new Promise((res) => {
@@ -49,6 +63,7 @@ function sendData(args) {
     })
 }
 
+// переключение вкладок
 const openPage = page => {
 
     const pages = [
@@ -75,12 +90,18 @@ const openPage = page => {
     new Promise((resolve, reject) => {
 
         for(pageSet of pages) {
-            let pageId = pageSet[0];
-            document.getElementById('header-title').style.opacity = 0;
-            document.getElementById(pageId).style.opacity = 0;
-            setTimeout(() => {
-                document.getElementById(pageId).style.display = 'none';
-            }, 200);
+            try {
+                let pageId = pageSet[0];
+                document.getElementById('header-title').style.opacity = 0;
+                document.getElementById(pageId).style.opacity = 0;
+                setTimeout(() => {
+                    document.getElementById(pageId).style.display = 'none';
+                }, 200);
+            }
+            catch(exc) {
+                console.log('error');
+                console.log(exc);
+            }
         }
 
         setTimeout(() => {
@@ -102,6 +123,8 @@ const openPage = page => {
     })
 
 }
+
+// всплывающие окна
 
 const shadow = visible => {
     return new Promise((resolve, reject) => {
@@ -163,10 +186,78 @@ const closePopup = (id = activePopup) => {
     return Promise.all([p1, p2]);
 }
 
+// изменение данных формы во всплывающем окне
+function replacePopupData(type, id) {
+    switch(type) {
+
+        case 'categories':
+            sendData({
+                body: {
+                    op: 'get_category_data',
+                    id: id
+                }
+            })
+            .then(response => {
+                const $title = document.getElementById('input-editCategory-name');
+                const $link = document.getElementById('input-editCategory-link');
+                let $button = document.getElementById('btn-editCategory');
+                const title = response['data']['title'];
+                const link = response['data']['icon'];
+                $title.value = title;
+                $link.value = link;
+                removeEventListenersFrom($button);
+                $button = document.getElementById('btn-editCategory');
+                $button.addEventListener('click', (e) => {
+                    editCategoryForm(id);
+                });
+            })
+            break;
+
+        case 'items':
+            sendData({
+                body: {
+                    op: 'get_item_data',
+                    id: id
+                }
+            })
+            .then(response => {
+
+                const $title = document.getElementById('input-editItem-title');
+                const $description = document.getElementById('input-editItem-description');
+                const $link = document.getElementById('input-editItem-link');
+                const $price = document.getElementById('input-editItem-price');
+                const $count = document.getElementById('input-editItem-count');
+                let $button = document.getElementById('btn-editItem');
+
+                const title = response['data']['title'];
+                const description = response['data']['description'];
+                const link = response['data']['link'];
+                const price = response['data']['price'];
+                const count = response['data']['count'];
+
+                $title.value = title;
+                $description.value = description;
+                $link.value = link;
+                $price.value = price;
+                $count.value = count;
+
+                removeEventListenersFrom($button);
+                $button = document.getElementById('btn-editItem');
+                $button.addEventListener('click', (e) => {
+                    editItemForm(id);
+                });
+            })
+            break;
+
+    }
+}
+
+// перезагрузка
 function reload() {
     document.location.reload();
 }
 
+// выход из системы
 function logout() {
     fetch('php/auth.php', {
         method: 'POST',
@@ -189,10 +280,7 @@ function logout() {
     })
 }
 
-const HEADERS = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-}
+// получение данных текущей сессии
 
 function getBasicInfo() {
     fetch('php/app.php', {
@@ -223,6 +311,8 @@ function getBasicInfo() {
     })
     .catch(console.error);
 }
+
+// категории
 
 function updateCategories() {
     sendData({
@@ -318,34 +408,119 @@ function editCategoryForm(id) {
     editCategory(id, title, link);
 }
 
-function removeEventListenersFrom(element) {
-    let clone = element.cloneNode(true);
-    element.parentNode.replaceChild(clone, element);
+// товары
+
+function updateItems() {
+    sendData({
+        body: {
+            op: 'get_items'
+        }
+    })
+    .then(response => {
+        const items = response['items'];
+        const $table = document.getElementById('items-table');
+        let content = `
+            <tr class="employees-table__title-row">
+                    <td style="width: 20px;"><div class="title">#</div></td>
+                    <td class="td-wide"><div class="title">Наименование товара</div></td>
+                    <td><div class="title">Стоимость</div></td>
+                    <td><div class="title">Количество</div></td>
+                    <td style="width: 160px;"><div class="title"></div></td>
+                    <td style="width: 100px;"><div class="title"></div></td>
+            </tr>
+            `;
+        for(item of items) {
+            content += `
+                <tr>
+                    <td style="width: 20px;"><div class="field">${item['id']}</div></td>
+                    <td class="td-wide"><div class="field">${item['title']}</div></td>
+                    <td><div class="field">${item['price']} руб.</div></td>
+                    <td><div class="field">${item['count']} шт.</div></td>
+                    <td style="width: 160px;"><button onclick="openPopup('popup-item-edit'); replacePopupData('items', '${item['id']}');">Редактировать</button></td>
+                    <td style="width: 100px;"><button class="table-btn__remove" onclick="removeItem('${item['id']}');">Удалить</button></td>
+                </tr>
+                `;
+        }
+        $table.innerHTML = content;
+    })
 }
 
-function replacePopupData(type, id) {
-    switch(type) {
-        case 'categories':
-            sendData({
-                body: {
-                    op: 'get_category_data',
-                    id: id
-                }
-            })
-            .then(response => {
-                const $title = document.getElementById('input-editCategory-name');
-                const $link = document.getElementById('input-editCategory-link');
-                let $button = document.getElementById('btn-editCategory');
-                const title = response['data']['title'];
-                const link = response['data']['icon'];
-                $title.value = title;
-                $link.value = link;
-                removeEventListenersFrom($button);
-                $button = document.getElementById('btn-editCategory');
-                $button.addEventListener('click', (e) => {
-                    editCategoryForm(id);
-                });
-            })
-            break;
-    }
+function addItem(title, description, link, price, count) {
+    console.log(title, description, link, price, count)
+    return new Promise((resolve, reject) => {
+        sendData({
+            body: {
+                op: 'add_item',
+                title: title,
+                description: description,
+                link: link,
+                price: price,
+                count: count
+            }
+        })
+        .then(() => { resolve(); })
+        .catch(() => { reject(); })
+    })
+}
+
+function addItemForm() {
+    const $title = document.getElementById('input-addItem-title');
+    const $description = document.getElementById('input-addItem-description');
+    const $link = document.getElementById('input-addItem-link');
+    const $price = document.getElementById('input-addItem-price');
+    const $count = document.getElementById('input-addItem-count');
+
+    let title = $title.value;
+    let description = $description.value;
+    let link = $link.value;
+    let price = $price.value;
+    let count = $count.value;
+
+    addItem(title, description, link, price, count)
+    .then(() => {
+        closePopup();
+        updateItems();
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+}
+
+function removeItem(id) {
+    sendData({
+        body: {
+            op: 'remove_item',
+            id: id
+        }
+    })
+    .then(() => {
+        updateItems();
+    })
+}
+
+function editItem(id, title, description, link, price, count) {
+    sendData({
+        body: {
+            op: 'edit_item',
+            id: id,
+            title: title,
+            description: description,
+            link: link,
+            price: price,
+            count: count
+        }
+    })
+    .then(() => {
+        closePopup();
+        updateItems();
+    })
+}
+
+function editItemForm(id) {
+    const title = document.getElementById('input-editItem-title').value;
+    const description = document.getElementById('input-editItem-description').value;
+    const link = document.getElementById('input-editItem-link').value;
+    const price = document.getElementById('input-editItem-price').value;
+    const count = document.getElementById('input-editItem-count').value;
+    editItem(id, title, description, link, price, count);
 }

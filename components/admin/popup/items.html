@@ -1,0 +1,53 @@
+<!-- Добавить товар -->
+<div class="popup" id="popup-item-add" style="display: none;">
+    <div class="popup-title">Добавить товар</div>
+    <table class="popup-table">
+        <tr>
+            <td><span>Наименование</span></td>
+            <td><input type="text" placeholder="Наименование товара" id="input-addItem-title"></td>
+        </tr>
+        <tr>
+            <td><span>Стоимость</span></td>
+            <td><input type="number" placeholder="Стоимость товара" id="input-addItem-price"></td>
+        </tr>
+        <tr>
+            <td><span>Количество</span></td>
+            <td><input type="number" placeholder="Количество" id="input-addItem-count"></td>
+        </tr>
+        <tr>
+            <td><span>Фотография</span></td>
+            <td><input type="text" placeholder="Ссылка" id="input-addItem-link"></td>
+        </tr>
+    </table>
+    <p class="popup-p">Описание товара</p>
+    <textarea class="popup-textarea" id="input-addItem-description">Прародителем текста-рыбы является известный "Lorem Ipsum" – латинский текст, ноги которого растут аж из 45 года до нашей эры. Сервисов по созданию случайного текста на основе Lorem Ipsum великое множество, однако все они имеют один существенный недостаток</textarea><br>
+    <button class="popup-apply" onclick="addItemForm();">Добавить</button>
+    <button class="popup-cancel" onclick="closePopup();">Отмена</button>
+</div>
+
+<!-- Редактировать информацию о товаре -->
+<div class="popup" id="popup-item-edit" style="display: none;">
+    <div class="popup-title">Информация о товаре</div>
+    <table class="popup-table">
+        <tr>
+            <td><span>Наименование</span></td>
+            <td><input type="text" placeholder="Наименование товара" id="input-editItem-title"></td>
+        </tr>
+        <tr>
+            <td><span>Стоимость</span></td>
+            <td><input type="number" placeholder="Стоимость товара" id="input-editItem-price"></td>
+        </tr>
+        <tr>
+            <td><span>Количество</span></td>
+            <td><input type="number" placeholder="Количество" id="input-editItem-count"></td>
+        </tr>
+        <tr>
+            <td><span>Фотография</span></td>
+            <td><input type="text" placeholder="Ссылка" id="input-editItem-link"></td>
+        </tr>
+    </table>
+    <p class="popup-p">Описание товара</p>
+    <textarea class="popup-textarea" id="input-editItem-description">Прародителем текста-рыбы является известный "Lorem Ipsum" – латинский текст, ноги которого растут аж из 45 года до нашей эры. Сервисов по созданию случайного текста на основе Lorem Ipsum великое множество, однако все они имеют один существенный недостаток</textarea><br>
+    <button class="popup-apply" id="btn-editItem">Сохранить</button>
+    <button class="popup-cancel" onclick="closePopup();">Отмена</button>
+</div>

@@ -29,7 +29,10 @@ function processStatus($status) {
 function requireFields($fields) {
     global $decoded;
     foreach($fields as $field) {
-        if(!isset($decoded[$field])) exit(emptyJson());
+        if(!isset($decoded[$field])) {
+            var_dump($decoded);
+            exit(emptyJson());
+        }
     }
 }
 
@@ -41,7 +44,6 @@ if($current_uuid == false) {
     $result = new Status('NOT_AUTHORIZED');
     exit($result->json());
 }
-
 
 if(isset($decoded['op'])) {
 
@@ -69,6 +71,7 @@ if(isset($decoded['op'])) {
     }
 
     // === категории ===
+
     if($decoded['op'] == 'add_category') {
 
         requireFields(['title', 'link']);
@@ -165,6 +168,128 @@ if(isset($decoded['op'])) {
                 ':id' => $decoded['id'],
                 ':title' => $decoded['title'],
                 ':icon' => $decoded['link']
+            ]
+        );
+
+        $result = new Status('OK');
+        exit(json_encode($result));
+    }
+
+    // === товары ===
+    
+    if($decoded['op'] == 'add_item') {
+
+        requireFields(['title', 'description', 'link', 'price', 'count']);
+
+        $title = $validate->std($decoded['title']);
+        $description = mb_substr($validate->std($decoded['description']), 0, 100);
+        $link = $validate->std($decoded['link']);
+        $price = $validate->std($decoded['price']);
+        $count = $validate->std($decoded['count']);
+
+        $data = $db->fetch(
+            'INSERT INTO `items` (`title`, `description`, `image`, `count`, `price`) 
+            VALUES (:title, :description, :image, :count, :price)',
+            [
+                ':title' => $title,
+                ':description' => $description,
+                ':image' => $link,
+                ':count' => $count,
+                ':price' => $price
+            ]
+        );
+
+        $res = new Status('OK', $title);
+        exit($res->json());
+
+    }
+
+    if($decoded['op'] == 'get_items') {
+        $rows = $db->fetchAll('SELECT * FROM `items`');
+        $items = [];
+        foreach ($rows as $row) {
+            array_push($items, [
+               'id' => $row['item_id'],
+               'title' => $row['title'],
+               'description' => $row['description'],
+               'link' => $row['image'],
+               'count' => $row['count'],
+               'price' => $row['price']
+            ]);
+        }
+        $data = [
+            'status' => 'OK',
+            'items' => $items
+        ];
+        exit(json_encode($data));
+    }
+
+    if($decoded['op'] == 'get_item_data') {
+
+        requireFields(['id']);
+
+        $row = $db->fetch(
+            'SELECT * FROM `items` 
+            WHERE `item_id` = :id',
+            [
+                ':id' => $decoded['id']
+            ]
+        );
+        $data = [
+            'status' => 'OK',
+            'data' => [
+                'id' => $row['item_id'],
+                'title' => $row['title'],
+                'description' => $row['description'],
+                'link' => $row['image'],
+                'count' => $row['count'],
+                'price' => $row['price']
+            ]
+        ];
+        exit(json_encode($data));
+    }
+
+    if($decoded['op'] == 'remove_item') {
+
+        requireFields(['id']);
+
+        $rows = $db->fetchAll(
+            'DELETE FROM `items` 
+            WHERE `item_id` = :id',
+            [
+                ':id' => $decoded['id']
+            ]
+        );
+
+        $result = new Status('OK');
+        exit(json_encode($result));
+    }
+
+    if($decoded['op'] == 'edit_item') {
+
+        requireFields(['id', 'title', 'description', 'link', 'price', 'count']);
+
+        $title = $validate->std($decoded['title']);
+        $description = mb_substr($validate->std($decoded['description']), 0, 100);
+        $link = $validate->std($decoded['link']);
+        $price = $validate->std($decoded['price']);
+        $count = $validate->std($decoded['count']);
+
+        $rows = $db->fetchAll(
+            'UPDATE `items` 
+            SET `title` = :title, 
+            `description` = :description,
+            `image` = :image,
+            `price` = :price,
+            `count` = :count
+            WHERE `item_id` = :id',
+            [
+                ':id' => $decoded['id'],
+                ':title' => $title,
+                ':description' => $description,
+                ':image' => $link,
+                ':price' => $price,
+                ':count' => $count
             ]
         );
 

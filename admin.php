@@ -58,6 +58,7 @@ function component($name) {
                 <div id="windows" style="display: none;">
 
                     <?php component('popup/categories'); ?>
+                    <?php component('popup/items'); ?>
                     
                 </div>
 
