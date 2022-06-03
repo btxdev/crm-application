@@ -40,6 +40,21 @@ function getItemsInBasket() {
   })
 }
 
+function removeItemFromOrder(id) {
+  sendData({
+      body: {
+          op: 'remove_item_from_basket',
+          id: id
+      },
+      catch: (err) => {
+          console.log(err);
+      }
+  })
+  .then(() => {
+    document.location.reload();
+  })
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
   getItemsInBasket();

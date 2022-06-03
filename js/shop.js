@@ -186,10 +186,11 @@ function getBasketPrice() {
       }
   })
   .then((serverData) => {
-    document.getElementById('basket-total').innerHTML = serverData['price']; 
+    const price = serverData['msg']['price'];
+    document.getElementById('basket-total').innerHTML = price; 
     $elem = document.getElementById('basket-page-total-price');
     if($elem) {
-      $elem.innerHTML = serverData['price'] + ' ₽';
+      $elem.innerHTML = price + ' ₽';
     }
   })
 }

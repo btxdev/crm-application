@@ -128,7 +128,10 @@ if(isset($decoded['op'])) {
         // получить id заказа пользователя
         $order = $db->fetch('SELECT `order_id` FROM `users_orders` WHERE `uuid` = :uuid', [':uuid' => $uuid]);
         if($order == false) {
-            $result = new Status('OK', ['price' => 0]);
+            $data = [
+                'price' => 0
+            ];
+            $result = new Status('OK', ['msg' => $data]);
             exit($result->json());
         }
         $order = $order['order_id'];
@@ -145,11 +148,11 @@ if(isset($decoded['op'])) {
             $total_price += $price;
         }
 
-        $data = json_encode([
-            'status' => 'OK',
+        $data = [
             'price' => $total_price
-        ]);
-        exit($data);
+        ];
+        $result = new Status('OK', ['msg' => $data]);
+        exit($result->json());
 
     }
 
