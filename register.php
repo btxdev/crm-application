@@ -27,16 +27,28 @@ if ($authorized) {
 <body class="page__body page__authorization">
   <main class="main authorization">
     <div class="form-inner">
-      <form method="POST" class="form">
+      <form method="POST" class="form" autocomplete="off">
         <h2 class="form-title">РЕГИСТРАЦИЯ</h2>
         <div class="input__login-wrapper input-wrapper">
           <input type="text" class="input__login input" placeholder="Логин" id="register-login">
         </div>
         <div class="input__password-wrapper input-wrapper">
-          <input type="password" class="input__password input" placeholder="Пароль" id="register-password">
+          <input type="password" autocomplete="new-password" class="input__password input" placeholder="Пароль" id="register-password">
+        </div>
+        <div class="input__phone-wrapper input-wrapper">
+          <input type="text" class="input__login input" placeholder="Имя" id="register-name1">
+        </div>
+        <div class="input__phone-wrapper input-wrapper">
+          <input type="text" class="input__login input" placeholder="Фамилия" id="register-name2">
+        </div>
+        <div class="input__phone-wrapper input-wrapper">
+          <input type="text" class="input__login input" placeholder="Отчество" id="register-name3">
         </div>
         <div class="input__phone-wrapper input-wrapper">
           <input type="text" class="input__login input" placeholder="Контактный телефон" id="register-phone">
+        </div>
+        <div class="input__phone-wrapper input-wrapper">
+          <input type="text" class="input__login input" placeholder="Ваш email" id="register-email">
         </div>
         <div class="button-wrapper">
           <button class="button-input" onclick="registerForm();">Зарегистрироваться</button>

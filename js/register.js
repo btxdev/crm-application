@@ -34,6 +34,9 @@ function sendData(args) {
                 //thenFunc(data);
                 document.location.reload(); 
             }
+            else {
+                alert('Указанный пользователь уже существует');
+            }
             res(data);
         })
         .catch(catchFunc);
@@ -41,26 +44,55 @@ function sendData(args) {
 }
 
 function registerForm() {
+    // сбор данных
     const login = document.getElementById('register-login').value;
     const password = document.getElementById('register-password').value;
+    const name1 = document.getElementById('register-name1').value;
+    const name2 = document.getElementById('register-name2').value;
+    const name3 = document.getElementById('register-name3').value;
     const phone = document.getElementById('register-phone').value;
-    sendData({
-        body: {
-            op: 'register',
-            login: login,
-            password: password,
-            phone: phone
-        },
-        thenFunc: (data) => {
-           //document.location.reload(); 
-        },
-        catchFunc: (err) => {
-            console.log(err);
-        }
+    const email = document.getElementById('register-email').value;
+    // валидация
+    const p1 = validate(login);
+    const p2 = validate(password);
+    const p3 = validate(name1);
+    const p4 = validate(name2);
+    const p5 = validate(name3);
+    const p6 = validate(phone);
+    const p7 = validate(email);
+    Promise.all([p1, p2, p3, p4, p5, p6, p7])
+    .then(() => {
+        sendData({
+            body: {
+                op: 'register',
+                login: login,
+                password: password,
+                name1: name1,
+                name2: name2,
+                name3: name3,
+                phone: phone,
+                email: email
+            },
+            then: (data) => {
+                console.log(data);
+                //document.location.reload(); 
+            },
+            catch: (err) => {
+                console.log(err);
+            }
+        })
     })
-    .then(response => {
+    .catch(() => {
+        alert('Необходимо заполнить все поля!')
+    })
 
-        //document.location.reload();
+}
+
+// валидация данных формы
+function validate(field) {
+    return new Promise((resolve, reject) => {
+        if(field) resolve();
+        else reject();
     })
 }
 

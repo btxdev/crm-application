@@ -56,13 +56,15 @@ if(isset($decoded['op'])) {
 
     if($decoded['op'] == 'register') {
 
-        requireFields(['login', 'password', 'phone']);
+        requireFields(['login', 'password', 'name1', 'name2', 'name3', 'email', 'phone']);
 
-        //$login = processStatus($validate->login($decoded['login']));
         $login = htmlspecialchars($decoded['login']);
-        //$password = processStatus($validate->password($decoded['password']));
         $password = htmlspecialchars($decoded['password']);
-        //$phone = htmlspecialchars($decoded['phone']);
+        $name1 = htmlspecialchars($decoded['name1']);
+        $name2 = htmlspecialchars($decoded['name2']);
+        $name3 = htmlspecialchars($decoded['name3']);
+        $email = htmlspecialchars($decoded['email']);
+        $phone = htmlspecialchars($decoded['phone']);
 
         $id = $admin->createUser($login, $password);
         if($id == false) {
@@ -74,6 +76,25 @@ if(isset($decoded['op'])) {
 
         $hash = $access->grantAccessToUserId($id);
         $result = $access->setSessionCookie($settings->get('session_name'), $hash);
+
+        // add information
+        $db->run(
+            'UPDATE `users` SET 
+            `first_name` = :name1,
+            `second_name` = :name2,
+            `patronymic` = :name3,
+            `email` = :email,
+            `phone` = :phone 
+            WHERE `uuid` = :id',
+            [
+                ':id' => $id,
+                ':name1' => $name1,
+                ':name2' => $name2,
+                ':name3' => $name3,
+                ':email' => $email,
+                ':phone' => $phone
+            ]
+        );
 
         $result = new Status('OK');
         exit($result->json());
