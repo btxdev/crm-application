@@ -77,8 +77,8 @@ if(isset($decoded['op'])) {
 
         // check if user has order
         $order = $db->fetch(
-            "SELECT * FROM `users_orders` 
-            WHERE `uuid` = :uuid 
+            "SELECT * FROM `users_orders` INNER JOIN `orders`
+            WHERE users_orders.uuid = :uuid 
             AND orders.status = 'basket'
             ", 
             [
@@ -135,9 +135,9 @@ if(isset($decoded['op'])) {
 
         // получить id заказа пользователя
         $order = $db->fetch(
-            "SELECT `order_id` 
-            FROM `users_orders` 
-            WHERE `uuid` = :uuid
+            "SELECT users_orders.order_id 
+            FROM `users_orders` INNER JOIN `orders`
+            WHERE users_orders.uuid = :uuid
             AND orders.status = 'basket'
             ", 
             [
@@ -180,9 +180,9 @@ if(isset($decoded['op'])) {
 
         // получить id заказа пользователя
         $order = $db->fetch(
-            "SELECT `order_id` 
-            FROM `users_orders` 
-            WHERE `uuid` = :uuid
+            "SELECT users_orders.order_id 
+            FROM `users_orders` INNER JOIN `orders`
+            WHERE users_orders.uuid = :uuid
             AND orders.status = 'basket'
             ", 
             [
