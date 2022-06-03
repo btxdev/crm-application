@@ -76,7 +76,15 @@ if(isset($decoded['op'])) {
         $uuid = $access->getUserIdBySessionHash($hash);
 
         // check if user has order
-        $order = $db->fetch('SELECT * FROM `users_orders` WHERE `uuid` = :uuid', [':uuid' => $uuid]);
+        $order = $db->fetch(
+            "SELECT * FROM `users_orders` 
+            WHERE `uuid` = :uuid 
+            AND orders.status = 'basket'
+            ", 
+            [
+                ':uuid' => $uuid
+            ]
+        );
         if($order == false) {
 
             // $sql = 'INSERT INTO `orders` (`status`) VALUES (`wait`);';
@@ -85,7 +93,7 @@ if(isset($decoded['op'])) {
             // $order = $stmt
 
             $db->fetch(
-                'INSERT INTO `orders` (`status`, `order_date`) VALUES ("wait", :order_date);',
+                'INSERT INTO `orders` (`status`, `order_date`) VALUES ("basket", :order_date);',
                 [
                     ':order_date' => date('Y-m-d')
                 ]
@@ -126,7 +134,16 @@ if(isset($decoded['op'])) {
         $uuid = $access->getUserIdBySessionHash($hash);
 
         // получить id заказа пользователя
-        $order = $db->fetch('SELECT `order_id` FROM `users_orders` WHERE `uuid` = :uuid', [':uuid' => $uuid]);
+        $order = $db->fetch(
+            "SELECT `order_id` 
+            FROM `users_orders` 
+            WHERE `uuid` = :uuid
+            AND orders.status = 'basket'
+            ", 
+            [
+                ':uuid' => $uuid
+            ]
+        );
         if($order == false) {
             $data = [
                 'price' => 0
@@ -162,7 +179,16 @@ if(isset($decoded['op'])) {
         $uuid = $access->getUserIdBySessionHash($hash);
 
         // получить id заказа пользователя
-        $order = $db->fetch('SELECT `order_id` FROM `users_orders` WHERE `uuid` = :uuid', [':uuid' => $uuid]);
+        $order = $db->fetch(
+            "SELECT `order_id` 
+            FROM `users_orders` 
+            WHERE `uuid` = :uuid
+            AND orders.status = 'basket'
+            ", 
+            [
+                ':uuid' => $uuid
+            ]
+        );
         if($order == false) {
             $result = new Status('OK', ['price' => 0]);
             exit($result->json());

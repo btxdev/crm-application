@@ -303,7 +303,7 @@ if(isset($decoded['op'])) {
         $rows = $db->fetchAll("SELECT * FROM `orders` WHERE `status` = 'wait'");
         $orders = [];
         foreach ($rows as $row) {
-            array_push($items, [
+            array_push($orders, [
                'id' => $row['order_id'],
                'status' => $row['status'],
                'order_date' => $row['order_date']
@@ -341,6 +341,21 @@ if(isset($decoded['op'])) {
         exit(json_encode($data));
     }
 
+    if($decoded['op'] == 'remove_order') {
+
+        requireFields(['id']);
+
+        $rows = $db->fetchAll(
+            "UPDATE `orders` SET `status` = 'complete' WHERE `order_id` = :id", 
+            [
+                ':id' => $decoded['id']
+            ]
+        );
+
+        $result = new Status('OK');
+        exit($result->json());
+    }
+
     // === пользователи ===
 
     if($decoded['op'] == 'get_users') {
@@ -361,6 +376,36 @@ if(isset($decoded['op'])) {
         $result = new Status('OK', ['msg' => $users]);
         exit($result->json());
     }
+
+    // // === заказы ===
+
+    // if($decoded['op'] == 'get_orders') {
+    //     $rows = $db->fetchAll("SELECT * FROM `orders` WHERE `status` = 'wait'");
+    //     $orders = [];
+    //     foreach ($rows as $row) {
+    //         array_push($orders, [
+    //             'id' => $row['order_id'],
+    //             'date' => $row['order_date']
+    //         ]);
+    //     }
+    //     $result = new Status('OK', ['msg' => $orders]);
+    //     exit($result->json());
+    // }
+
+    // if($decoded['op'] == 'remove_order') {
+
+    //     requireFields(['id']);
+
+    //     $rows = $db->fetchAll(
+    //         "UPDATE `orders` SET `status` = 'complete' WHERE `order_id` = :id", 
+    //         [
+    //             ':id' => $id
+    //         ]
+    //     );
+
+    //     $result = new Status('OK');
+    //     exit($result->json());
+    // }
 
 }
 

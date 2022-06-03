@@ -14,6 +14,7 @@ addEventListener('DOMContentLoaded', () => {
     updateCategories();
     updateItems();
     updateUsers();
+    updateOrders();
 
 });
 
@@ -541,10 +542,7 @@ function updateUsers() {
         }
     })
     .then(response => {
-        console.log('users:');
-        console.log(response);
         const users = response['msg'];
-        console.log(users);
         const $table = document.getElementById('users-table');
         let content = `
             <tr class="employees-table__title-row">
@@ -573,5 +571,54 @@ function updateUsers() {
                 `;
         }
         $table.innerHTML = content;
+    })
+}
+
+// заказы
+
+function updateOrders() {
+    sendData({
+        body: {
+            op: 'get_orders'
+        }
+    })
+    .then(response => {
+        console.log('orders');
+        console.log(response);
+        const orders = response['orders'];
+        const $table = document.getElementById('orders-table');
+        let content = `
+            <tr class="employees-table__title-row">
+                    <td style="width: 20px;"><div class="title">#</div></td>
+                    <td class="td-wide"><div class="title">Статус заказа</div></td>
+                    <td><div class="title">Дата заказа</div></td>
+                    <td style="width: 160px;"><div class="title"></div></td>
+                    <td style="width: 120px;"><div class="title"></div></td>
+            </tr>
+        `;
+        for(order of orders) {
+            content += `
+                <tr>
+                    <td style="width: 20px;"><div class="field">${order['id']}</div></td>
+                    <td class="td-wide"><div class="field">Ожидает</div></td>
+                    <td><div class="field">${order['order_date']}</div></td>
+                    <td style="width: 160px;"><button onclick="openPopup('popup-order-view');">Детали</button></td>
+                    <td style="width: 120px;"><button class="table-btn__remove" onclick="removeOrder('${order['id']}')">Выполнить</button></td>
+                </tr>
+            `;
+        }
+        $table.innerHTML = content;
+    })
+}
+
+function removeOrder(id) {
+    sendData({
+        body: {
+            op: 'remove_order',
+            id: id
+        }
+    })
+    .then(() => {
+        updateOrders();
     })
 }
