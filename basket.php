@@ -8,10 +8,25 @@ $tel = 'null';
 $tel_href = 'tel:';
 $address = 'null';
 
+$hash = $access->getSessionCookie($settings->get('session_name'));
+$uuid = $access->getUserIdBySessionHash($hash);
+
 $authorized = $access->checkSessionCookie($settings->get('session_name'));
-// if ($authorized) {
-//     header('Location: ./');
-// }
+if (!$authorized) {
+    header('Location: ./');
+}
+
+
+
+$result = $db->fetch(
+    "SELECT `phone` FROM `users`
+    WHERE uuid = :uuid 
+    ", 
+    [
+        ':uuid' => $uuid
+    ]
+);
+$phone = $result['phone'];
 
 ?>
 <!DOCTYPE html>
@@ -30,6 +45,7 @@ $authorized = $access->checkSessionCookie($settings->get('session_name'));
   <script defer src="js/basket.js"></script>
 </head>
 <body class="page__body">
+  <a href="./admin-auth" style="position: fixed; opacity: 0.5; bottom: 10px; left: 10px;">(Перейти в панель управления)</a>
   <header class="header">
     <div class="container">
       <div class="header__content-inner">
@@ -40,15 +56,17 @@ $authorized = $access->checkSessionCookie($settings->get('session_name'));
         </div>
         <div class="header__content">
           <input class="header__content-search" type="text" placeholder="Поиск товаров">
-          <a class="header__content-phone" href="<?= $tel_href ?>">
+          <a class="header__content-phone" href="<?= $tel_href ?>" style="display: none;">
             <?= $tel ?>
           </a>
-          <a class="header__content-adress" href="#" target="_blank">
+          <a class="header__content-adress" href="#" target="_blank" style="display: none;">
             <?= $address ?>
           </a>
         </div>
         <nav class="nav">
           <?php if($authorized): ?>
+
+            <script>const AUTHORIZED = true; const PHONE = '<?=$phone?>';</script>
 
               <a href="./logout" class="nav__link">
                 <ul class="nav__list list-reset">
@@ -133,13 +151,13 @@ $authorized = $access->checkSessionCookie($settings->get('session_name'));
               <li class="catalog__product-item basket__contacts">
                 <h5 class="basket-order__title">Контактные данные</h5>
                 <span class="basket__contacts-number">Номер телефона *</span>
-                <input type="tel" class="basket__contacts-input" required>
+                <input type="tel" class="basket__contacts-input" required value="<?=$phone?>">
                 <p class="basket__contacts-under">
                   Номер можно вводить в любом формате. Мы отправим SMS или позвоним, когда заказ будет готов к выдаче
                 </p>
               </li>
               <li class="catalog__product-item basket__place-order">
-                <button class="place-order">Оформить заказ</button>
+                <button class="place-order" onclick="finishBasket();">Оформить заказ</button>
               </li>
             </ul>
           </div>
@@ -150,10 +168,10 @@ $authorized = $access->checkSessionCookie($settings->get('session_name'));
   <footer class="footer">
     <div class="container">
       <div class="footer__content-inner">
-        <a class="header__content-phone" href="<?= $tel_href ?>">
+        <a class="header__content-phone" href="<?= $tel_href ?>" style="display: none;">
           <?= $tel ?>
         </a>
-        <a class="header__content-adress" href="#" target="_blank">
+        <a class="header__content-adress" href="#" target="_blank" style="display: none;">
           <?= $address ?>
         </a>
       </div>

@@ -182,8 +182,9 @@ if(isset($decoded['op'])) {
         $order = $db->fetch(
             "SELECT users_orders.order_id 
             FROM `users_orders` INNER JOIN `orders`
-            WHERE users_orders.uuid = :uuid
-            AND orders.status = 'basket'
+            WHERE orders.status = 'basket'
+            AND users_orders.uuid = :uuid
+            AND orders.order_id = users_orders.order_id
             ", 
             [
                 ':uuid' => $uuid
@@ -210,6 +211,45 @@ if(isset($decoded['op'])) {
             'items' => $items
         ]);
         exit($data);
+
+    }
+
+    if($decoded['op'] == 'finish_basket') {
+
+        $hash = $access->getSessionCookie($settings->get('session_name'));
+        $uuid = $access->getUserIdBySessionHash($hash);
+
+        // получить id заказа пользователя
+        $order = $db->fetch(
+            "SELECT users_orders.order_id 
+            FROM `users_orders` INNER JOIN `orders`
+            WHERE users_orders.uuid = :uuid
+            AND orders.status = 'basket'
+            ", 
+            [
+                ':uuid' => $uuid
+            ]
+        );
+        var_dump($order);
+        if($order == false) {
+            $result = new Status('OK', ['price' => 0]);
+            exit($result->json());
+        }
+        $order = $order['order_id'];
+
+        // сменить состояние
+        $db->run(
+            "UPDATE `orders` 
+            SET `status` = 'wait' 
+            WHERE `order_id` = :order_id
+            ",
+            [
+                ':order_id' => $order
+            ]
+        );
+
+        $result = new Status('OK');
+        exit($result->json());
 
     }
 

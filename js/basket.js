@@ -4,6 +4,7 @@ function getItemsInBasket() {
           op: 'get_basket_items'
       },
       catch: (err) => {
+          document.getElementById('basket-items-container').innerHTML = '';
           console.log(err);
       }
   })
@@ -12,6 +13,7 @@ function getItemsInBasket() {
     console.log(serverData);
 
     $elem = document.getElementById('basket-items-container');
+    $elem.innerHTML = '';
     let content = '';
 
     const items = serverData['items'];

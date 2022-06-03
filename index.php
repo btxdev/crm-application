@@ -29,6 +29,7 @@ $authorized = $access->checkSessionCookie($settings->get('session_name'));
   <script defer src="js/shop.js"></script>
 </head>
 <body class="page__body">
+  <a href="./admin-auth" style="position: fixed; opacity: 0.5; bottom: 10px; left: 10px;">(Перейти в панель управления)</a>
   <header class="header">
     <div class="container">
       <div class="header__content-inner">
@@ -39,15 +40,17 @@ $authorized = $access->checkSessionCookie($settings->get('session_name'));
         </div>
         <div class="header__content">
           <input class="header__content-search" type="text" placeholder="Поиск товаров">
-          <a class="header__content-phone" href="<?= $tel_href ?>">
+          <a class="header__content-phone" href="<?= $tel_href ?>" style="display: none;">
             <?= $tel ?>
           </a>
-          <a class="header__content-adress" href="#" target="_blank">
+          <a class="header__content-adress" href="#" target="_blank" style="display: none;">
             <?= $address ?>
           </a>
         </div>
         <nav class="nav">
           <?php if($authorized): ?>
+
+              <script>const AUTHORIZED = true;</script>
 
               <a href="./logout" class="nav__link">
                 <ul class="nav__list list-reset">
@@ -67,6 +70,8 @@ $authorized = $access->checkSessionCookie($settings->get('session_name'));
               </a>
 
           <?php else: ?>
+
+              <script>const AUTHORIZED = false;</script>
 
               <a href="./login" class="nav__link">
                 <ul class="nav__list list-reset">
@@ -226,10 +231,10 @@ $authorized = $access->checkSessionCookie($settings->get('session_name'));
   <footer class="footer">
     <div class="container">
       <div class="footer__content-inner">
-        <a class="header__content-phone" href="<?= $tel_href ?>">
+        <a class="header__content-phone" href="<?= $tel_href ?>" style="display: none;">
           <?= $tel ?>
         </a>
-        <a class="header__content-adress" href="#" target="_blank">
+        <a class="header__content-adress" href="#" target="_blank" style="display: none;">
           <?= $address ?>
         </a>
       </div>

@@ -80,7 +80,7 @@ function getCats() {
         body: {
             op: 'get_cats_items'
         },
-        catchFunc: (err) => {
+        catch: (err) => {
             console.log(err);
         }
     })
@@ -155,6 +155,11 @@ function addItemToBasket(id, elem, price) {
   //   //elem.classList.add('basket-disabled');
   //   //elem.removeAttribute('onclick');
   // }
+
+  if(!AUTHORIZED) {
+    document.location.href = './login';
+    return;
+  }
   
 
   sendData({
@@ -192,5 +197,19 @@ function getBasketPrice() {
     if($elem) {
       $elem.innerHTML = price + ' ₽';
     }
+  })
+}
+
+function finishBasket() {
+  sendData({
+      body: {
+          op: 'finish_basket'
+      },
+      catch: (err) => {
+          console.log(err);
+      }
+  })
+  .then((serverData) => {
+    document.location.reload();
   })
 }
