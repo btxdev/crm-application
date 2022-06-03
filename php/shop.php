@@ -69,6 +69,7 @@ if(isset($decoded['op'])) {
 
     }
 
+    // добавление товара в корзину
     if($decoded['op'] == 'add_item_to_basket') {
 
         $id = $decoded['id'];
@@ -130,6 +131,50 @@ if(isset($decoded['op'])) {
 
     }
 
+    // удаление товара из корзины
+    if($decoded['op'] == 'remove_item_from_basket') {
+
+        $id = $decoded['id'];
+        $hash = $access->getSessionCookie($settings->get('session_name'));
+        $uuid = $access->getUserIdBySessionHash($hash);
+
+        // check if user has order
+        $order = $db->fetch(
+            "SELECT * FROM `users_orders` INNER JOIN `orders`
+             WHERE orders.status = 'basket'
+            AND users_orders.uuid = :uuid
+            AND orders.order_id = users_orders.order_id
+            ", 
+            [
+                ':uuid' => $uuid
+            ]
+        );
+
+        if($order == false) {
+            exit(empty_json());
+        }
+        else {
+            $order = $order['order_id'];
+        }
+
+        // remove item
+        $db->fetch(
+            'DELETE FROM `orders_items` 
+            WHERE `order_id` = :order_id
+            AND `item_id` = :item_id
+            ',
+            [
+                ':order_id' => $order,
+                ':item_id' => $id
+            ]
+        );
+
+        $result = new Status('OK');
+        exit($result->json());
+
+    }
+
+    // стоимость корзины
     if($decoded['op'] == 'get_basket_price') {
 
         $hash = $access->getSessionCookie($settings->get('session_name'));
@@ -176,6 +221,7 @@ if(isset($decoded['op'])) {
 
     }
 
+    // список товаров в корзине
     if($decoded['op'] == 'get_basket_items') {
 
         $hash = $access->getSessionCookie($settings->get('session_name'));
@@ -217,6 +263,7 @@ if(isset($decoded['op'])) {
 
     }
 
+    // отправка заказа
     if($decoded['op'] == 'finish_basket') {
 
         $hash = $access->getSessionCookie($settings->get('session_name'));
@@ -256,6 +303,7 @@ if(isset($decoded['op'])) {
         exit($result->json());
 
     }
+
 
 }
 

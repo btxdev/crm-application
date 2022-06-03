@@ -32,7 +32,7 @@ function getItemsInBasket() {
             <div class="count-plus count-wrap">+</div>
         </div>-->
         <span class="basket__product-item__price-total">${item['price']} ₽</span>
-        <div class="basket__product-item__delete">x</div>
+        <div class="basket__product-item__delete" onclick="removeItemFromOrder(${item['item_id']});">x</div>
         </div>
     `;
     }
