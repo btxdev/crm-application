@@ -13,6 +13,7 @@ addEventListener('DOMContentLoaded', () => {
     getBasicInfo();
     updateCategories();
     updateItems();
+    updateUsers();
 
 });
 
@@ -529,4 +530,48 @@ function editItemForm(id) {
     const price = document.getElementById('input-editItem-price').value;
     const count = document.getElementById('input-editItem-count').value;
     editItem(id, title, description, link, price, count);
+}
+
+// пользователи
+
+function updateUsers() {
+    sendData({
+        body: {
+            op: 'get_users'
+        }
+    })
+    .then(response => {
+        console.log('users:');
+        console.log(response);
+        const users = response['msg'];
+        console.log(users);
+        const $table = document.getElementById('users-table');
+        let content = `
+            <tr class="employees-table__title-row">
+                    <td style="width: 20px;"><div class="title">#</div></td>
+                    <td><div class="title">Пользователь</div></td>
+                    <td><div class="title">Имя</div></td>
+                    <td><div class="title">Фамилия</div></td>
+                    <td><div class="title">Отчество</div></td>
+                    <td><div class="title">Телефон</div></td>
+                    <td><div class="title">Почта</div></td>
+                    <td><div class="title">Дата регистрации</div></td>
+            </tr>
+            `;
+        for(user of users) {
+            content += `
+                <tr>
+                    <td style="width: 20px;"><div class="field">${user['id']}</div></td>
+                    <td><div class="field">${user['username']}</div></td>
+                    <td><div class="field">${user['first_name']}</div></td>
+                    <td><div class="field">${user['second_name']}</div></td>
+                    <td><div class="field">${user['patronymic']}</div></td>
+                    <td><div class="field">${user['phone']}</div></td>
+                    <td><div class="field">${user['email']}</div></td>
+                    <td><div class="field">${user['reg_date']}</div></td>
+                </tr>
+                `;
+        }
+        $table.innerHTML = content;
+    })
 }

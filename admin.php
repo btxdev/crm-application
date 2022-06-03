@@ -83,7 +83,7 @@ function component($name) {
                         <div class="aside-li__icon" style="background-image: url(img/order-icon.png)"></div>
                         <div class="aside-li__label">Заказы</div>
                     </li>
-                    <li class="aside-li" onclick="openPage('users');" style="display: none;">
+                    <li class="aside-li" onclick="openPage('users');">
                         <div class="aside-li__icon" style="background-image: url(img/user-icon.png)"></div>
                         <div class="aside-li__label">Пользователи</div>
                     </li>

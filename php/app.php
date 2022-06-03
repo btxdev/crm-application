@@ -341,6 +341,27 @@ if(isset($decoded['op'])) {
         exit(json_encode($data));
     }
 
+    // === пользователи ===
+
+    if($decoded['op'] == 'get_users') {
+        $rows = $db->fetchAll("SELECT * FROM `users`");
+        $users = [];
+        foreach ($rows as $row) {
+            array_push($users, [
+                'id' => $row['uuid'],
+                'username' => $row['username'],
+                'first_name' => $row['first_name'],
+                'second_name' => $row['second_name'],
+                'patronymic' => $row['patronymic'],
+                'phone' => $row['phone'],
+                'email' => $row['email'],
+                'reg_date' => $row['reg_date']
+            ]);
+        }
+        $result = new Status('OK', ['msg' => $users]);
+        exit($result->json());
+    }
+
 }
 
 
