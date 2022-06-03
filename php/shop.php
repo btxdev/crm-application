@@ -78,13 +78,15 @@ if(isset($decoded['op'])) {
         // check if user has order
         $order = $db->fetch(
             "SELECT * FROM `users_orders` INNER JOIN `orders`
-            WHERE users_orders.uuid = :uuid 
-            AND orders.status = 'basket'
+             WHERE orders.status = 'basket'
+            AND users_orders.uuid = :uuid
+            AND orders.order_id = users_orders.order_id
             ", 
             [
                 ':uuid' => $uuid
             ]
         );
+
         if($order == false) {
 
             // $sql = 'INSERT INTO `orders` (`status`) VALUES (`wait`);';
@@ -137,8 +139,9 @@ if(isset($decoded['op'])) {
         $order = $db->fetch(
             "SELECT users_orders.order_id 
             FROM `users_orders` INNER JOIN `orders`
-            WHERE users_orders.uuid = :uuid
-            AND orders.status = 'basket'
+            WHERE orders.status = 'basket'
+            AND users_orders.uuid = :uuid
+            AND orders.order_id = users_orders.order_id
             ", 
             [
                 ':uuid' => $uuid
@@ -223,14 +226,15 @@ if(isset($decoded['op'])) {
         $order = $db->fetch(
             "SELECT users_orders.order_id 
             FROM `users_orders` INNER JOIN `orders`
-            WHERE users_orders.uuid = :uuid
-            AND orders.status = 'basket'
+            WHERE orders.status = 'basket'
+            AND users_orders.uuid = :uuid
+            AND orders.order_id = users_orders.order_id
             ", 
             [
                 ':uuid' => $uuid
             ]
         );
-        var_dump($order);
+
         if($order == false) {
             $result = new Status('OK', ['price' => 0]);
             exit($result->json());
