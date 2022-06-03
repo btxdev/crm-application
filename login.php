@@ -47,5 +47,6 @@ if ($authorized) {
       </form>
     </div>
   </main>
+  <div class="admin-panel-btn" onclick="document.location.href = './admin-auth'">Перейти в панель управления</div>
 </body>
 </html>

@@ -769,4 +769,23 @@ ul {
   margin-top: 20px;
   font-size: 16px;
 }
+
+.admin-panel-btn {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  display: inline-block;
+  font-size: 18px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #505050;
+  opacity: 0.2;
+  cursor: pointer;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+}
+
+.admin-panel-btn:hover {
+  opacity: 1;
+}
 /*# sourceMappingURL=style.css.map */
