@@ -377,6 +377,24 @@ if(isset($decoded['op'])) {
         exit($result->json());
     }
 
+    // === отправка писем ===
+    if($decoded['op'] == 'send_mail') {
+        $id = $decoded['id'];
+        $email = $decoded['email'];
+
+        $name = $db->fetch("SELECT first_name FROM users WHERE uuid = :uuid", ['uuid' => $id])['first_name'];
+
+        $subject = $name.', Ваш заказ готов к выдаче!';
+        $msg_text = $name.', мы готовы выдать Ваш заказ. Заказ доступен по адресу: ул. Колтушкина, офис 42, 614000. Спасибо, что покупаете у нас!';
+
+        include_once('mail.php');
+        $message = generate_mail_html($msg_text);
+        mail($email, $subject, $message);
+
+        $result = new Status('OK');
+        exit($result->json());
+    }
+
     // // === заказы ===
 
     // if($decoded['op'] == 'get_orders') {
