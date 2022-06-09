@@ -124,6 +124,23 @@ $phone = $result['phone'];
             <ul class="catalog__product-list catalog__product-list--active basket__list">
               <h3 class="catalog__product-title basket__title">Оформление заказа</h3>
               <li class="catalog__product-item basket__product">
+                <h5 class="basket-order__title">Ваши заказы</h5>
+                <div id="orders-container">
+                  <div class="basket__product-item order-complete">
+                    <span class="basket__product-item__id">#1111</span>
+                    <a class="basket__product-item__title">Заказ: товар товар товар товар товар товар товар товар товар...</a>
+                    <span class="basket__product-item__price">Готов к выдаче</span>
+                    <span class="basket__product-item__price-total">1215 ₽</span>
+                  </div>
+                  <div class="basket__product-item order-wait">
+                    <span class="basket__product-item__id">#1111</span>
+                    <a class="basket__product-item__title">Заказ: товар товар товар товар товар товар товар товар товар...</a>
+                    <span class="basket__product-item__price">В обработке</span>
+                    <span class="basket__product-item__price-total">1215 ₽</span>
+                  </div>
+                </div>
+              </li>
+              <li class="catalog__product-item basket__product">
                 <h5 class="basket-order__title">Ваши товары</h5>
                 <div id="basket-items-container">
                   <div class="basket__product-item">

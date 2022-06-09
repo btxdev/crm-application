@@ -263,6 +263,50 @@ if(isset($decoded['op'])) {
 
     }
 
+    // список заказов
+    if($decoded['op'] == 'get_orders') {
+
+        $str_limit = 100;
+
+        $hash = $access->getSessionCookie($settings->get('session_name'));
+        $uuid = $access->getUserIdBySessionHash($hash);
+
+        $orders = $db->fetchAll("SELECT * FROM `users_orders` INNER JOIN `orders` WHERE `uuid` = :uuid AND users_orders.order_id = orders.order_id",
+            [
+                ':uuid' => $uuid
+            ]
+        );
+
+        $data = [];
+        foreach($orders as $order) {
+            if($order['status'] == 'basket') continue;
+            $obj = [];
+            $obj['id'] = $order['order_id'];
+            $obj['description'] = 'Заказ был сформирован '.$order['order_date'].'. Товары в заказе: ';
+            $obj['status'] = $order['status'];
+            $obj['price'] = 0;
+            // get items in order
+            $items = $db->fetchAll('SELECT * FROM `orders_items` INNER JOIN `items` WHERE `order_id` = :order_id AND items.item_id = orders_items.item_id', [':order_id' => $order['order_id']]);
+            foreach($items as $item) {
+                $obj['price'] += intval($item['price']);
+                $obj['description'] .= $item['title'].', ';
+            }
+            $obj['description'] = mb_substr($obj['description'], 0, -2);
+            if(mb_strlen($obj['description']) >= $str_limit) {
+                $obj['description'] = mb_substr($obj['description'], 0, $str_limit).'...';
+            }
+
+            array_push($data, $obj);
+        }
+
+        //$result = new Status('OK', [$data]);
+        //exit($result->json());
+        exit(json_encode([
+            'status' => 'OK',
+            'data' => $data
+        ]));
+    }
+
     // отправка заказа
     if($decoded['op'] == 'finish_basket') {
 

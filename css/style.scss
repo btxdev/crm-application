@@ -27,7 +27,13 @@ html {
 .main {
   min-height: 800px;
 }
-h1,h2,h3,h4,h5,h6,p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   margin: 0;
   padding: 0;
 }
@@ -103,7 +109,7 @@ ul {
       padding-left: 16px;
       font-size: 16px;
       color: #0da119;
-      transition: .3s ;
+      transition: 0.3s;
       &::before {
         content: '';
         position: absolute;
@@ -131,7 +137,6 @@ ul {
       }
     }
   }
- 
 }
 .nav {
   width: auto;
@@ -176,7 +181,6 @@ ul {
     display: flex;
     flex-direction: row-reverse;
     margin-top: 15px;
-
   }
   &__product-title {
     margin-bottom: 20px;
@@ -243,7 +247,7 @@ ul {
     color: #666;
     background-color: #fff;
     cursor: pointer;
-    transition: background-color .3s;
+    transition: background-color 0.3s;
     &:hover {
       background-color: #ced4da;
     }
@@ -302,17 +306,17 @@ ul {
 }
 .price-basket {
   font-size: 0.9em;
-    border-bottom: 3px solid rgb(13, 161, 25);
-    display: inline-block;
-    width: 100px;
-    padding: 5px 10px;
-    border-radius: 0px 0px 4px 4px;
-    text-align: center;
-    margin-top: 0px;
-    cursor: pointer;
-    line-height: 26px;
-    background: rgb(87, 201, 87);
-    color: #fff;
+  border-bottom: 3px solid rgb(13, 161, 25);
+  display: inline-block;
+  width: 100px;
+  padding: 5px 10px;
+  border-radius: 0px 0px 4px 4px;
+  text-align: center;
+  margin-top: 0px;
+  cursor: pointer;
+  line-height: 26px;
+  background: rgb(87, 201, 87);
+  color: #fff;
 }
 .price-disabled {
   font-size: 1.2em;
@@ -353,7 +357,7 @@ ul {
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
   line-height: 1.5;
-  border-radius: 0.3rem;  
+  border-radius: 0.3rem;
   color: #fff;
   background-color: #007bff;
   text-align: center;
@@ -379,7 +383,6 @@ ul {
 }
 .catalog__product-item.basket__product {
   padding: 15px;
-
 }
 .basket__contacts-number {
   display: block;
@@ -392,9 +395,9 @@ ul {
   margin-top: 10px;
   font-size: 13px;
   line-height: 20px;
-  color: #6c757d
+  color: #6c757d;
 }
-.basket__contacts-input { 
+.basket__contacts-input {
   display: block;
   width: 100%;
   height: calc(1.5em + 0.75rem + 2px);
@@ -407,8 +410,7 @@ ul {
   background-clip: padding-box;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
-  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
- 
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 .basket__product-item {
   display: flex;
@@ -443,7 +445,6 @@ ul {
   border-radius: 4px;
   font-weight: 700;
   font-size: 1.5em;
-  
 }
 
 .count-wrap {
@@ -465,7 +466,6 @@ ul {
   width: 40px;
   text-align: center;
   line-height: 36px;
- 
 }
 .page__authorization {
   background-color: #fff;
@@ -495,7 +495,7 @@ ul {
   border: 1px solid #888;
   border-radius: 10px;
   font-size: 16px;
-  transition: .2s;
+  transition: 0.2s;
   &::placeholder {
     font-weight: 500;
     font-size: 12px;
@@ -520,7 +520,7 @@ ul {
   text-transform: uppercase;
   color: #fff;
   background-color: chocolate;
-  transition: .3s ;
+  transition: 0.3s;
   &:hover {
     transform: scale(1.1);
   }
@@ -534,7 +534,7 @@ ul {
     padding-right: 16px;
     font-size: 15px;
     line-height: 18px;
-    color: #C4C4C4;
+    color: #c4c4c4;
     &::after {
       content: '';
       position: absolute;
@@ -544,7 +544,7 @@ ul {
       height: 10px;
       background-image: url('../img/breadcrumbs.svg');
     }
-    &:last-child::after{
+    &:last-child::after {
       display: none;
     }
   }
@@ -552,7 +552,7 @@ ul {
     color: inherit;
   }
 }
-.product__page-image  {
+.product__page-image {
   margin-top: 20px;
   min-width: none;
   max-width: none;
@@ -593,4 +593,13 @@ ul {
 }
 .admin-panel-btn:hover {
   opacity: 1;
+}
+
+#orders-container > .basket__product-item {
+  padding: 6px 0;
+  margin: 3px 0;
+}
+
+.order-complete {
+  border: 1px solid lime;
 }
