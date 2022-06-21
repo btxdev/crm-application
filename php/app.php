@@ -385,14 +385,25 @@ if(isset($decoded['op'])) {
         $name = $db->fetch("SELECT first_name FROM users WHERE uuid = :uuid", ['uuid' => $id])['first_name'];
 
         $subject = $name.', Ваш заказ готов к выдаче!';
-        $msg_text = $name.', мы готовы выдать Ваш заказ. Заказ доступен по адресу: ул. Колтушкина, офис 42, 614000. Спасибо, что покупаете у нас!';
+        //$msg_text = $name.', мы готовы выдать Ваш заказ. Заказ доступен по адресу: ул. Колтушкина, офис 42, 614000. Спасибо, что покупаете у нас!';
+        $msg_text = $name.', мы готовы выдать Ваш заказ. Спасибо, что покупаете у нас!<br><br><br>';
 
         include_once('mail.php');
         $message = generate_mail_html($msg_text);
-        mail($email, $subject, $message);
+        $mailer_result = send_mail($email, $subject, $message);
 
-        $result = new Status('OK');
-        exit($result->json());
+        if($mailer_result['status']) {
+            $result = new Status('OK');
+            exit($result->json());
+        }
+        else {
+            $result = json_encode([
+                'status' => 'ERROR',
+                'msg' => $mailer_result['msg']
+            ]);
+            exit($result);
+        }
+        
     }
 
     // // === заказы ===
